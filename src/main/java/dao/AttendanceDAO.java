@@ -305,7 +305,7 @@ public class AttendanceDAO {
             stmt.setString(1, status);
             stmt.setInt(2, studentId);
             stmt.setInt(3, subjectId);
-            stmt.setDate(4, new java.sql.Date(date.getTime())); // ✅ Use your parameter here
+            stmt.setDate(4, new java.sql.Date(date.getTime())); 
 
             stmt.executeUpdate();
 
