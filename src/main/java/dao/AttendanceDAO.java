@@ -50,7 +50,7 @@ public class AttendanceDAO {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 AttendanceViewModel a = new AttendanceViewModel();
-                a.setDate(rs.getDate("date")); // ✅ now matches AttendanceViewModel's setDate(Date)
+                a.setDate(rs.getDate("date"));
 
                 a.setClassName(rs.getString("class_name"));
                 a.setSubjectName(rs.getString("subject_name"));
