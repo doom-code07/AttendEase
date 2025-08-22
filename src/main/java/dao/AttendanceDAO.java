@@ -18,7 +18,7 @@ public class AttendanceDAO {
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setDate(1, attendance.getDate()); // ✅ Corrected: use setDate not setString
+            stmt.setDate(1, attendance.getDate()); 
             stmt.setInt(2, attendance.getClassId());
             stmt.setInt(3, attendance.getStudentId());
             stmt.setInt(4, attendance.getSubjectId());
