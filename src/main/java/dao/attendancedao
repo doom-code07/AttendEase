@@ -1,0 +1,130 @@
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.ResultSet;
+
+import java.time.LocalDate;
+import java.util.*;
+
+import model.AttendanceModel;
+import model.AttendanceViewModel;
+import utils.DBConnection;
+
+public class AttendanceDAO {
+
+    public void markAttendance(AttendanceModel attendance) throws SQLException {
+        String sql = "INSERT INTO Attendance_Register (date, class_id, student_id, subject_id, status) VALUES (?, ?, ?, ?, ?)";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setDate(1, attendance.getDate()); // ✅ Corrected: use setDate not setString
+            stmt.setInt(2, attendance.getClassId());
+            stmt.setInt(3, attendance.getStudentId());
+            stmt.setInt(4, attendance.getSubjectId());
+            stmt.setString(5, attendance.getStatus());
+
+            stmt.executeUpdate();
+        }
+    }
+
+    public List<AttendanceViewModel> getAttendanceByStudent(int studentId, String filterDate) {
+        List<AttendanceViewModel> attendanceList = new ArrayList<>();
+
+        String sql = "SELECT ar.date, c.name AS class_name, s.title AS subject_name, ar.status " +
+                "FROM Attendance_Register ar " +
+                "JOIN class c ON ar.class_id = c.id " +
+                "JOIN subject s ON ar.subject_id = s.id " +
+                "WHERE ar.student_id = ? " +
+                (filterDate != null && !filterDate.isEmpty() ? "AND ar.date = ? " : "") +
+                "ORDER BY ar.date DESC";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, studentId);
+            if (filterDate != null && !filterDate.isEmpty()) {
+                ps.setDate(2, java.sql.Date.valueOf(filterDate));
+            }
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                AttendanceViewModel a = new AttendanceViewModel();
+                a.setDate(rs.getDate("date")); // ✅ now matches AttendanceViewModel's setDate(Date)
+
+                a.setClassName(rs.getString("class_name"));
+                a.setSubjectName(rs.getString("subject_name"));
+                a.setStatus(rs.getString("status"));
+                attendanceList.add(a);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return attendanceList;
+    }
+
+    public Map<String, Double> calculateAttendancePercentage(int studentId) {
+        Map<String, Integer> counts = new HashMap<>();
+        int total = 0;
+
+        String sql = "SELECT status, COUNT(*) AS count FROM Attendance_Register WHERE student_id = ? GROUP BY status";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, studentId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                String status = rs.getString("status");
+                int count = rs.getInt("count");
+                counts.put(status, count);
+                total += count;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Convert counts to percentages
+        Map<String, Double> percentages = new HashMap<>();
+        String[] statuses = {"Present", "Absent", "Leave", "StruckOff"};
+        for (String status : statuses) {
+            int count = counts.getOrDefault(status, 0);
+            double percentage = total == 0 ? 0 : (count * 100.0) / total;
+            percentages.put(status, percentage);
+        }
+
+        return percentages;
+    }
+
+
+
+
+    public AttendanceModel getByRollNumberAndDate(String rollNumber, java.sql.Date date) throws Exception {
+        String sql = "SELECT ar.* FROM Attendance_Register ar " +
+                "JOIN student s ON ar.student_id = s.id " +
+                "WHERE s.roll_number = ? AND ar.date = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, rollNumber);
+            ps.setDate(2, date);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                AttendanceModel a = new AttendanceModel();
+                a.setId(rs.getInt("id"));
+                a.setDate(rs.getDate("date"));
+                a.setClassId(rs.getInt("class_id"));
+                a.setStudentId(rs.getInt("student_id"));
+                a.setSubjectId(rs.getInt("subject_id"));
+                a.setStatus(rs.getString("status"));
+                return a;
+            }
+        }
+        return null;
+    }
+
+}

@@ -1,0 +1,57 @@
+package servlet;
+
+import dao.AttendanceDAO;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import utils.DBConnection;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+
+public class UpdateAttendanceServlet extends HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        System.out.println("---- Form Submission ----");
+        System.out.println("attendance_id: " + request.getParameter("attendance_id"));
+        System.out.println("roll_no: " + request.getParameter("roll_no"));
+        System.out.println("subject_id: " + request.getParameter("subject_id"));
+        System.out.println("status: " + request.getParameter("status"));
+        System.out.println("date: " + request.getParameter("date"));
+
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
+
+        try {
+            int attendanceId = Integer.parseInt(request.getParameter("attendance_id"));
+            String status = request.getParameter("status");
+            int subjectId = Integer.parseInt(request.getParameter("subject_id"));
+            Date newDate = Date.valueOf(request.getParameter("date")); // use newDate
+            String rollNo = request.getParameter("roll_no");
+
+            Connection con = DBConnection.getConnection();
+            String query = "UPDATE Attendance_Register SET status = ?, subject_id = ?, date = ? WHERE id = ?";
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setString(1, status);
+            ps.setInt(2, subjectId);
+            ps.setDate(3, newDate);  // update with new date
+            ps.setInt(4, attendanceId);
+            ps.executeUpdate();
+
+            int rows = ps.executeUpdate();
+            System.out.println("Rows updated: " + rows);
+
+            con.close();
+
+
+
+            response.sendRedirect("update_attendance.jsp?roll_no=" + rollNo + "&date=" + request.getParameter("date"));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.getWriter().println("Error updating attendance: " + e.getMessage());
+        }
+    }
+}

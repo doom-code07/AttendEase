@@ -1,0 +1,43 @@
+<%@ page import="java.util.List, model.LeaveApplication" %>
+<%
+    List<LeaveApplication> apps = (List<LeaveApplication>) request.getAttribute("applications");
+%>
+<html><head><title>Vice Principal - Applications</title></head><body>
+<h2>Applications for Vice Principal (more than 3 days)</h2>
+<% if (apps == null || apps.isEmpty()) { %>
+    <p>No applications.</p>
+<% } else { %>
+    <table border="1" cellpadding="5" cellspacing="0">
+        <tr><th>ID</th><th>Applicant ID</th><th>Start</th><th>End</th><th>Days</th><th>Description</th><th>Status</th><th>Action</th></tr>
+        <% for (LeaveApplication a : apps) {
+             long days = (a.getEndDate().getTime() - a.getStartDate().getTime())/(1000*60*60*24) + 1;
+        %>
+            <tr>
+                <td><%= a.getId() %></td>
+                <td><%= a.getApplicantId() %></td>
+                <td><%= a.getStartDate() %></td>
+                <td><%= a.getEndDate() %></td>
+                <td><%= days %></td>
+                <td><%= a.getDescription() %></td>
+                <td><%= a.getStatus() %></td>
+                <td>
+                    <% if ("Pending".equals(a.getStatus())) { %>
+                        <form action="ApproveDeclineServlet" method="post" style="display:inline">
+                            <input type="hidden" name="applicationId" value="<%= a.getId() %>">
+                            <input type="hidden" name="from" value="vice">
+                            <button name="action" value="Approved" type="submit">Approve</button>
+                        </form>
+                        <form action="ApproveDeclineServlet" method="post" style="display:inline">
+                            <input type="hidden" name="applicationId" value="<%= a.getId() %>">
+                            <input type="hidden" name="from" value="vice">
+                            <button name="action" value="Declined" type="submit">Decline</button>
+                        </form>
+                    <% } else { %>
+                        <%= a.getStatus()%>
+                    <% } %>
+                </td>
+            </tr>
+        <% } %>
+    </table>
+<% } %>
+</body></html>

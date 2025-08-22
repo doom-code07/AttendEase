@@ -1,0 +1,27 @@
+package servlet;
+
+import dao.ClassDAO;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+
+
+import java.io.IOException;
+
+
+public class DeleteClassServlet extends HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String classIdStr = request.getParameter("classId");
+
+        if (classIdStr != null) {
+            try {
+                int classId = Integer.parseInt(classIdStr);
+                ClassDAO dao = new ClassDAO();
+                dao.deleteClass(classId);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+
+        response.sendRedirect("manage_classes.jsp");
+    }
+}

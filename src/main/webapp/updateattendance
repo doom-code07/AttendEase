@@ -1,0 +1,66 @@
+<%@ page import="java.util.*, java.sql.*, model.*, dao.*" %>
+<%
+    String rollNo = request.getParameter("roll_no");
+    String dateStr = request.getParameter("date");
+    Integer teacherId = (Integer) session.getAttribute("teacherId"); // stored at login
+
+    AttendanceModel attendance = null;
+    List<SubjectModel> subjects = new ArrayList<>();
+
+    if (rollNo != null && dateStr != null && teacherId != null) {
+        java.sql.Date date = java.sql.Date.valueOf(dateStr);
+        AttendanceDAO adao = new AttendanceDAO();
+        attendance = adao.getAttendanceByRollNoAndDate(rollNo, date);
+
+        SubjectDAO sdao = new SubjectDAO();
+        subjects = sdao.getSubjectsByTeacherId(teacherId);
+    }
+%>
+
+<!-- Step 1: Roll No and Date Input Form -->
+<form action="update_attendance.jsp" method="get">
+    <p>Enter Roll No: <input type="text" name="roll_no" required value="<%= rollNo != null ? rollNo : "" %>"></p>
+    <p>Select Date: <input type="date" name="date" required value="<%= dateStr != null ? dateStr : "" %>"></p>
+    <input type="submit" value="Fetch Attendance">
+</form>
+
+<% if (rollNo != null && dateStr != null && attendance != null) { %>
+
+    <!-- Step 2: Attendance Update Form -->
+    <hr>
+
+
+    <form action="UpdateAttendanceServlet" method="post">
+        <input type="hidden" name="attendance_id" value="<%= attendance.getId() %>" />
+        <input type="hidden" name="roll_no" value="<%= rollNo %>" />
+        <input type="hidden" name="date" value="<%= dateStr %>" />
+
+        <p>Status:
+            <select name="status">
+                <option value="Present" <%= "Present".equals(attendance.getStatus()) ? "selected" : "" %>>Present</option>
+                <option value="Absent" <%= "Absent".equals(attendance.getStatus()) ? "selected" : "" %>>Absent</option>
+                <option value="Leave" <%= "Leave".equals(attendance.getStatus()) ? "selected" : "" %>>Leave</option>
+                <option value="Struck Off" <%= "Struck Off".equals(attendance.getStatus()) ? "selected" : "" %>>Struck Off</option>
+            </select>
+        </p>
+
+        <p>Subject:
+            <select name="subject_id">
+                <% for (SubjectModel s : subjects) { %>
+                    <option value="<%= s.getId() %>" <%= s.getId() == attendance.getSubjectId() ? "selected" : "" %>>
+                        <%= s.getTitle() %>
+                    </option>
+                <% } %>
+            </select>
+        </p>
+
+            <p>Date:
+                <input type="date" name="date" value="<%= dateStr %>" required>
+            </p>
+
+        <input type="submit" value="Update Attendance">
+    </form>
+
+<% } else if (rollNo != null && dateStr != null) { %>
+    <p style="color:red;">No attendance record found for the given roll number and date.</p>
+<% } %>

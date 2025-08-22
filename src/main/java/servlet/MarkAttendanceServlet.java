@@ -1,0 +1,46 @@
+package servlet;
+
+import dao.AttendanceDAO;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import model.AttendanceModel;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.sql.Date;
+import java.util.Map;
+
+public class MarkAttendanceServlet extends HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int classId = Integer.parseInt(request.getParameter("classId"));
+        int subjectId = Integer.parseInt(request.getParameter("subjectId"));
+
+        String dateStr = request.getParameter("date");
+        Date sqlDate = Date.valueOf(dateStr); // yyyy-MM-dd
+
+        AttendanceDAO attendanceDAO = new AttendanceDAO();
+        Map<String, String[]> parameterMap = request.getParameterMap();
+
+        for (String paramName : parameterMap.keySet()) {
+            if (paramName.startsWith("status_")) {
+                int studentId = Integer.parseInt(paramName.substring(7));
+                String status = request.getParameter(paramName);
+
+                AttendanceModel attendance = new AttendanceModel();
+                attendance.setDate(sqlDate);               // ✅ Correct usage now
+                attendance.setClassId(classId);
+                attendance.setStudentId(studentId);
+                attendance.setSubjectId(subjectId);
+                attendance.setStatus(status);
+
+                try {
+                    attendanceDAO.markAttendance(attendance);
+                } catch (SQLException e) {
+                    e.printStackTrace(); // You can add a proper error page here
+                }
+            }
+        }
+
+        response.sendRedirect("mark_attendance.jsp"); // ✅ Done
+    }
+}
