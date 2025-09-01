@@ -1,0 +1,26 @@
+package servlet;
+
+import dao.StudentDAO;
+import model.StudentModel;
+
+import jakarta.servlet.ServletException;
+
+import jakarta.servlet.http.*;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
+
+
+public class ManageStruckOffServlet extends HttpServlet {
+    private StudentDAO studentDAO = new StudentDAO();
+
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            List<StudentModel> struck = studentDAO.getAllStruckOffStudents();
+            req.setAttribute("struckList", struck);
+            req.getRequestDispatcher("manage_struckOff.jsp").forward(req, resp);
+        } catch (SQLException e) {
+            throw new ServletException(e);
+        }
+    }
+}

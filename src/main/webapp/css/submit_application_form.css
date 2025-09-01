@@ -1,0 +1,103 @@
+.application-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 25px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.application-student-info {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #f4f8fc;
+    border-left: 4px solid #0077cc;
+    border-radius: 6px;
+}
+.application-student-info p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #333;
+}
+
+.application-alert {
+    padding: 12px 15px;
+    margin: 10px 0;
+    border-radius: 6px;
+    font-size: 14px;
+}
+.application-alert.error {
+    background: #ffe5e5;
+    color: #cc0000;
+    border-left: 4px solid #cc0000;
+}
+.application-alert.success {
+    background: #e6ffe6;
+    color: #008000;
+    border-left: 4px solid #008000;
+}
+
+.application-form {
+    display: flex;
+    flex-direction: column;
+}
+.application-form label {
+    margin-top: 12px;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #333;
+}
+.application-form input,
+.application-form textarea,
+.application-form select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+.application-form input:focus,
+.application-form textarea:focus,
+.application-form select:focus {
+    border-color: #0077cc;
+}
+
+.date-row {
+    display: flex;
+    gap: 20px;
+    margin-top: 12px;
+}
+
+.date-field {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.date-field label {
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #333;
+}
+
+.application-form .date-field input[type="date"] {
+    width: 50% !important;
+}
+
+.application-btn {
+    margin-top: 18px;
+    padding: 12px;
+    background: #0077cc;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+.application-btn:hover {
+    background: #005fa3;
+}

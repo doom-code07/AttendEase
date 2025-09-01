@@ -1,0 +1,229 @@
+/* General Style*/
+body, h1, h2, p, ul, li, a {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-decoration: none;
+    list-style: none;
+    box-sizing: border-box;
+}
+
+.container {
+    width: 1400px;
+    display: flex;
+    height: 100vh;
+    background: white;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 250px;
+    background: navy;
+    color: white;
+    padding: 20px;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    text-align: center;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-bottom: 2px solid white;
+    padding-bottom: 10px;
+}
+
+.sidebar ul {
+    margin-top: 10px;
+}
+
+.sidebar ul li {
+    margin-bottom: 15px;
+    transition: transform 0.2s;
+}
+
+.sidebar ul li a {
+    color: white;
+    font-size: 18px;
+    display: block;
+    background-color: #1b3a63;
+    padding: 12px 16px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.sidebar ul li a:hover {
+    background: white;
+    color: navy;
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Main Content Styles */
+.main-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background: white;
+}
+
+.main-content header {
+    background: navy;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: white;
+    text-align: center;
+}
+
+.main-content header h1 {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.sidebar ul li a {
+    color: white;
+    font-size: 18px;
+    display: flex;
+    align-items: center; /* Align text and icon vertically */
+    background-color: #1b3a63;
+    padding: 12px 16px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    gap: 10px; /* Space between icon and text */
+}
+
+.sidebar ul li a i {
+    font-size: 20px; /* Icon size */
+}
+.sidebar ul li a.active {
+    background-color: white;
+    color: navy;
+    font-weight: bold;
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+ /* Back Arrow Styles */
+ .back-arrow {
+    display: flex;
+    align-items: center;
+    color:navy;
+    font-size: 18px;
+    text-decoration: none;
+    margin-bottom: 20px;
+}
+.back-arrow i {
+    margin-right: 10px;
+}
+/* Logout icon styles */
+
+.logout_icon{
+    display: flex;
+    align-items: center;
+    color:navy;
+    font-size: 18px;
+    text-decoration: none;
+    margin-bottom: 20px;
+}
+.logout_icon i {
+    margin-right: 10px;
+}
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: inline-block;
+        }
+
+        select {
+            width: 25%;
+            max-width: 400px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+.class-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.class-block {
+    flex: 1 1 300px;
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 8px;
+    background: #f9f9f9;
+}
+
+        /* Button used in dashboards*/
+        button {
+            padding: 8px 16px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: block;
+            margin: 10px auto;
+            text-align: center;
+        }
+        
+        button:hover {
+            background-color: #218838;
+        }
+.delete-btn {
+    background-color: #dc3545;
+    color: #fff;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+.delete-btn:hover {
+    background-color: #c82333;
+}
+
+        /* All tables that are used */
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            text-align: center;
+            padding: 10px;
+        }
+        th {
+            background-color:  #007bff;
+            color: #fff;
+            font-weight: bold;
+        }
+
+/* Input field */
+input[type="text"],input[type="number"],input[type="date"] {
+    width: 30%;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+

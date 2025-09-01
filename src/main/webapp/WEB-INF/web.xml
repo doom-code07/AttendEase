@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+         http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+
+  <display-name>Archetype Created Web Application</display-name>
+
+  <!-- Login Servlet -->
+  <servlet>
+    <servlet-name>LoginServlet</servlet-name>
+    <servlet-class>servlet.LoginServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LoginServlet</servlet-name>
+    <url-pattern>/LoginServlet</url-pattern>
+  </servlet-mapping>
+
+  <!-- Add Section Servlets-->
+  <servlet>
+    <servlet-name>AddClassServlet</servlet-name>
+    <servlet-class>servlet.AddClassServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddClassServlet</servlet-name>
+    <url-pattern>/AddClassServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>AddSubjectServlet</servlet-name>
+    <servlet-class>servlet.AddSubjectServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddSubjectServlet</servlet-name>
+    <url-pattern>/AddSubjectServlet</url-pattern>
+  </servlet-mapping>
+
+
+  <servlet>
+    <servlet-name>DeleteClassServlet</servlet-name>
+    <servlet-class>servlet.DeleteClassServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DeleteClassServlet</servlet-name>
+    <url-pattern>/DeleteClassServlet</url-pattern>
+  </servlet-mapping>
+
+
+  <servlet>
+    <servlet-name>DeleteSubjectServlet</servlet-name>
+    <servlet-class>servlet.DeleteSubjectServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DeleteSubjectServlet</servlet-name>
+    <url-pattern>/DeleteSubjectServlet</url-pattern>
+  </servlet-mapping>
+
+  <!-- Registration servlets -->
+  <servlet>
+    <servlet-name>StudentRegisterServlet</servlet-name>
+    <servlet-class>servlet.StudentRegisterServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>StudentRegisterServlet</servlet-name>
+    <url-pattern>/StudentRegisterServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>ForgotPasswordServlet</servlet-name>
+    <servlet-class>servlet.ForgotPasswordServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ForgotPasswordServlet</servlet-name>
+    <url-pattern>/ForgotPasswordServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>ResetPasswordServlet</servlet-name>
+    <servlet-class>servlet.ResetPasswordServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ResetPasswordServlet</servlet-name>
+    <url-pattern>/ResetPasswordServlet</url-pattern>
+  </servlet-mapping>
+
+
+  <servlet>
+    <servlet-name>DeleteAllStudentsServlet</servlet-name>
+    <servlet-class>servlet.DeleteAllStudentsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DeleteAllStudentsServlet</servlet-name>
+    <url-pattern>/DeleteAllStudentsServlet</url-pattern>
+  </servlet-mapping>
+
+
+  <servlet>
+    <servlet-name>DeleteStudentServlet</servlet-name>
+    <servlet-class>servlet.DeleteStudentServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DeleteStudentServlet</servlet-name>
+    <url-pattern>/DeleteStudentServlet</url-pattern>
+  </servlet-mapping>
+
+
+
+  <servlet>
+    <servlet-name>ManageStudentServlet</servlet-name>
+    <servlet-class>servlet.ManageStudentServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ManageStudentServlet</servlet-name>
+    <url-pattern>/ManageStudentServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>SubmitUpdateStudentServlet</servlet-name>
+    <servlet-class>servlet.SubmitUpdateStudentServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SubmitUpdateStudentServlet</servlet-name>
+    <url-pattern>/SubmitUpdateStudentServlet</url-pattern>
+  </servlet-mapping>
+
+
+  <servlet>
+    <servlet-name>UpdateStudentServlet</servlet-name>
+    <servlet-class>servlet.UpdateStudentServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UpdateStudentServlet</servlet-name>
+    <url-pattern>/UpdateStudentServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>ViewStudentServlet</servlet-name>
+    <servlet-class>servlet.ViewStudentServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ViewStudentServlet</servlet-name>
+    <url-pattern>/ViewStudentServlet</url-pattern>
+  </servlet-mapping>
+
+  <!-- Teacher Servlets-->
+
+  <servlet>
+    <servlet-name>AddTeacherServlet</servlet-name>
+    <servlet-class>servlet.AddTeacherServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddTeacherServlet</servlet-name>
+    <url-pattern>/AddTeacherServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>ManageTeacherServlet</servlet-name>
+    <servlet-class>servlet.ManageTeacherServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ManageTeacherServlet</servlet-name>
+    <url-pattern>/ManageTeacherServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>ViewTeacherServlet</servlet-name>
+    <servlet-class>servlet.ViewTeacherServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ViewTeacherServlet</servlet-name>
+    <url-pattern>/ViewTeacherServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>UpdateTeacherServlet</servlet-name>
+    <servlet-class>servlet.UpdateTeacherServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UpdateTeacherServlet</servlet-name>
+    <url-pattern>/UpdateTeacherServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>DeleteTeacherServlet</servlet-name>
+    <servlet-class>servlet.DeleteTeacherServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DeleteTeacherServlet</servlet-name>
+    <url-pattern>/DeleteTeacherServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>DeleteAllTeachersServlet</servlet-name>
+    <servlet-class>servlet.DeleteAllTeachersServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DeleteAllTeachersServlet</servlet-name>
+    <url-pattern>/DeleteAllTeachersServlet</url-pattern>
+  </servlet-mapping>
+
+  <!-- Assign Subjects to teacher-->
+
+  <servlet>
+    <servlet-name>AssignSubjectServlet</servlet-name>
+    <servlet-class>servlet.AssignSubjectServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AssignSubjectServlet</servlet-name>
+    <url-pattern>/AssignSubjectServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>UnassignSubjectServlet</servlet-name>
+    <servlet-class>servlet.UnassignSubjectServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>UnassignSubjectServlet</servlet-name>
+    <url-pattern>/UnassignSubjectServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>UnassignAllSubjectsServlet</servlet-name>
+    <servlet-class>servlet.UnassignAllSubjectsServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>UnassignAllSubjectsServlet</servlet-name>
+    <url-pattern>/UnassignAllSubjectsServlet</url-pattern>
+  </servlet-mapping>
+
+  <!-- Vice Principal Policies-->
+
+  <servlet>
+    <servlet-name>AddPolicyServlet</servlet-name>
+    <servlet-class>servlet.AddPolicyServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddPolicyServlet</servlet-name>
+    <url-pattern>/AddPolicyServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>DeletePolicyServlet</servlet-name>
+    <servlet-class>servlet.DeletePolicyServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DeletePolicyServlet</servlet-name>
+    <url-pattern>/DeletePolicyServlet</url-pattern>
+  </servlet-mapping>
+
+
+  <!-- Mark Attendance mapping -->
+
+  <servlet>
+    <servlet-name>MarkAttendanceServlet</servlet-name>
+    <servlet-class>servlet.MarkAttendanceServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MarkAttendanceServlet</servlet-name>
+    <url-pattern>/MarkAttendanceServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>ViewAttendanceServlet</servlet-name>
+    <servlet-class>servlet.ViewAttendanceServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>ViewAttendanceServlet</servlet-name>
+    <url-pattern>/ViewAttendanceServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>UpdateAttendanceServlet</servlet-name>
+    <servlet-class>servlet.UpdateAttendanceServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>UpdateAttendanceServlet</servlet-name>
+    <url-pattern>/UpdateAttendanceServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>FetchAttendanceServlet</servlet-name>
+    <servlet-class>servlet.FetchAttendanceServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>FetchAttendanceServlet</servlet-name>
+    <url-pattern>/FetchAttendanceServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>FetchTeacherSubjectsServlet</servlet-name>
+    <servlet-class>servlet.FetchTeacherSubjectsServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>FetchTeacherSubjectsServlet</servlet-name>
+    <url-pattern>/FetchTeacherSubjectsServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>ViewAttendanceByClassServlet</servlet-name>
+    <servlet-class>servlet.ViewAttendanceByClassServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>ViewAttendanceByClassServlet</servlet-name>
+    <url-pattern>/ViewAttendanceByClassServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>DeleteAttendanceServlet</servlet-name>
+    <servlet-class>servlet.DeleteAttendanceServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>DeleteAttendanceServlet</servlet-name>
+    <url-pattern>/DeleteAttendanceServlet</url-pattern>
+  </servlet-mapping>
+
+
+  <!-- policies mapping -->
+  <servlet>
+    <servlet-name>ApplyPolicyServlet</servlet-name>
+    <servlet-class>servlet.ApplyPolicyServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>ApplyPolicyServlet</servlet-name>
+    <url-pattern>/ApplyPolicyServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>StudentDashboardServlet</servlet-name>
+    <servlet-class>servlet.StudentDashboardServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>StudentDashboardServlet</servlet-name>
+    <url-pattern>/StudentDashboardServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>ManageStruckOffServlet</servlet-name>
+    <servlet-class>servlet.ManageStruckOffServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ManageStruckOffServlet</servlet-name>
+    <url-pattern>/ManageStruckOffServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>ParentMeetingDoneServlet</servlet-name>
+    <servlet-class>servlet.ParentMeetingDoneServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ParentMeetingDoneServlet</servlet-name>
+    <url-pattern>/ParentMeetingDoneServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>SubmitApplicationServlet</servlet-name>
+    <servlet-class>servlet.SubmitApplicationServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SubmitApplicationServlet</servlet-name>
+    <url-pattern>/SubmitApplicationServlet</url-pattern>
+  </servlet-mapping>
+
+
+  <servlet>
+    <servlet-name>TeacherApplicationsServlet</servlet-name>
+    <servlet-class>servlet.TeacherApplicationsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>TeacherApplicationsServlet</servlet-name>
+    <url-pattern>/TeacherApplicationsServlet</url-pattern>
+  </servlet-mapping>
+
+
+  <servlet>
+    <servlet-name>ViceApplicationsServlet</servlet-name>
+    <servlet-class>servlet.ViceApplicationsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ViceApplicationsServlet</servlet-name>
+    <url-pattern>/ViceApplicationsServlet</url-pattern>
+  </servlet-mapping>
+
+
+  <servlet>
+    <servlet-name>ApproveDeclineServlet</servlet-name>
+    <servlet-class>servlet.ApproveDeclineServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ApproveDeclineServlet</servlet-name>
+    <url-pattern>/ApproveDeclineServlet</url-pattern>
+  </servlet-mapping>
+
+
+  <servlet>
+    <servlet-name>CheckStatusServlet</servlet-name>
+    <servlet-class>servlet.CheckStatusServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CheckStatusServlet</servlet-name>
+    <url-pattern>/CheckStatusServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>ActiveApprovedLeavesServlet</servlet-name>
+    <servlet-class>servlet.ActiveApprovedLeavesServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ActiveApprovedLeavesServlet</servlet-name>
+    <url-pattern>/ActiveApprovedLeavesServlet</url-pattern>
+  </servlet-mapping>
+
+
+  <servlet>
+    <servlet-name>GenerateChallanPageServlet</servlet-name>
+    <servlet-class>servlet.GenerateChallanPageServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GenerateChallanPageServlet</servlet-name>
+    <url-pattern>/GenerateChallanPageServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>GenerateChallanServlet</servlet-name>
+    <servlet-class>servlet.GenerateChallanServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GenerateChallanServlet</servlet-name>
+    <url-pattern>/GenerateChallanServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>DeleteAllApplicationsServlet</servlet-name>
+    <servlet-class>servlet.DeleteAllApplicationsServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>DeleteAllApplicationsServlet</servlet-name>
+    <url-pattern>/DeleteAllApplicationsServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>DeleteAllViceApplicationsServlet</servlet-name>
+    <servlet-class>servlet.DeleteAllViceApplicationsServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>DeleteAllViceApplicationsServlet</servlet-name>
+    <url-pattern>/DeleteAllViceApplicationsServlet</url-pattern>
+  </servlet-mapping>
+
+
+
+
+
+  <listener>
+    <listener-class>listener.AppContextListener</listener-class>
+  </listener>
+
+
+</web-app>
+
+
+
