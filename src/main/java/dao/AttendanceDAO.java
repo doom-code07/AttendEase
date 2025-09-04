@@ -130,7 +130,7 @@ public class AttendanceDAO {
 
         // Convert counts to percentages
         Map<String, Double> percentages = new HashMap<>();
-        String[] statuses = {"Present", "Absent", "Leave", "StruckOff"};
+        String[] statuses = {"Present", "Absent", "Leave", "Struck Off"};
         for (String status : statuses) {
             int count = counts.getOrDefault(status, 0);
             double percentage = total == 0 ? 0 : (count * 100.0) / total;
@@ -459,5 +459,52 @@ public class AttendanceDAO {
             }
         }
     }
+
+
+
+
+
+
+
+
+    public int countAbsentsThisMonth(int studentId, int year, int month) {
+        String sql = "SELECT COUNT(*) FROM Attendance_Register " +
+                "WHERE student_id=? AND status='Absent' AND YEAR(date)=? AND MONTH(date)=?";
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, studentId);
+            ps.setInt(2, year);
+            ps.setInt(3, month);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return rs.getInt(1);
+            }
+        } catch (Exception e) { e.printStackTrace(); }
+        return 0;
+    }
+
+    // in dao/AttendanceDAO.java
+    public List<java.sql.Date> getAbsentDatesThisMonthAsc(int studentId, int year, int month) {
+        List<java.sql.Date> out = new ArrayList<>();
+        String sql = "SELECT date FROM Attendance_Register " +
+                "WHERE student_id=? AND status='Absent' AND YEAR(date)=? AND MONTH(date)=?" +
+                " ORDER BY date ASC";
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, studentId);
+            ps.setInt(2, year);
+            ps.setInt(3, month);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    // rs.getDate returns java.sql.Date
+                    out.add(rs.getDate("date"));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return out;
+    }
+
+
 
 }

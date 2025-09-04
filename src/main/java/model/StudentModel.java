@@ -19,6 +19,7 @@ public class StudentModel {
     private Date struckOffDate;
     private boolean parentMeetingDone;
     private Date meetingDoneDate;
+    private boolean currentlyStruckOff;
 
 
     public boolean isStruckOff() {
@@ -44,6 +45,9 @@ public class StudentModel {
     public void setParentMeetingDone(boolean parentMeetingDone) {
         this.parentMeetingDone = parentMeetingDone;
     }
+
+    public boolean isCurrentlyStruckOff() { return currentlyStruckOff; }
+    public void setCurrentlyStruckOff(boolean currentlyStruckOff) { this.currentlyStruckOff = currentlyStruckOff; }
 
     public StudentModel(int id, int userId, String rollNo, String batch, String name, String username, String email, String cnic, String className, int classId) {
         this.id = id;

@@ -17,7 +17,8 @@
     <form action="ResetPasswordServlet" method="post">
     <h2>Reset Password</h2>
         <label for="password">Enter your new password:</label><br>
-        <input type="password" id="password" name="newPassword" pattern="\d{3,6}" title="Enter 3 to 6 digit roll number" required><br><br>
+        <input type="password" id="password" name="newPassword" pattern="^(?=.*\d).{8,}$"
+                                                                                   title="Password must be at least 8 characters long and include at least one digit." required><br><br>
         <input type="submit" value="Reset Password">
     </form>
 </body>

@@ -59,7 +59,7 @@
                 <li><span style="color:green;">✔️ Present:</span> <%= String.format("%.2f", percentages.get("Present")) %>%</li>
                 <li><span style="color:red;">❌ Absent:</span> <%= String.format("%.2f", percentages.get("Absent")) %>%</li>
                 <li><span style="color:blue;">🟡 Leave:</span> <%= String.format("%.2f", percentages.get("Leave")) %>%</li>
-                <li><span style="color:orange;">⚠️ Struck Off:</span> <%= String.format("%.2f", percentages.get("StruckOff")) %>%</li>
+                <li><span style="color:orange;">⚠️ Struck Off:</span> <%= String.format("%.2f", percentages.get("Struck Off")) %>%</li>
             </ul>
         <%
             }
@@ -93,7 +93,7 @@
                         <% } else if ("Leave".equalsIgnoreCase(a.getStatus())) { %>
                             <span class="status pending">Leave</span>
                         <% } else { %>
-                            <span class="status struckoff">Struck Off</span>
+                            <span class="status struck Off">Struck Off</span>
                         <% } %>
                     </td>
                 </tr>

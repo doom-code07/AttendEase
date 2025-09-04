@@ -47,6 +47,27 @@ public class PolicyDAO {
         return exists;
     }
 
+    public PolicyModel getCurrentPolicy() {
+        String sql = "SELECT id, min_attendance_percentage, fine_per_absent_subject, struck_off_after_absents " +
+                "FROM Policies ORDER BY id DESC LIMIT 1";
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    PolicyModel p = new PolicyModel();
+                    p.setId(rs.getInt("id"));
+                    p.setMinAttendancePercentage(rs.getInt("min_attendance_percentage"));
+                    p.setFinePerAbsentSubject(rs.getInt("fine_per_absent_subject"));
+                    p.setStruckOffAfterAbsents(rs.getInt("struck_off_after_absents"));
+                    return p;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null; // If no policy yet, caller should guard against null.
+    }
+
     // Retrieve current policy (if needed for display)
     public PolicyModel getPolicy() throws Exception {
         PolicyModel policy = null;
@@ -75,22 +96,6 @@ public class PolicyDAO {
         con.close();
     }
 
-    public PolicyModel getCurrentPolicy() {
-        PolicyModel policy = new PolicyModel();
-        try (Connection con = DBConnection.getConnection()) {
-            String query = "SELECT * FROM Policies ORDER BY id DESC LIMIT 1";
-            PreparedStatement ps = con.prepareStatement(query);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                policy.setMinAttendancePercentage(rs.getInt("min_attendance_percentage"));
-                policy.setFinePerAbsentSubject(rs.getInt("fine_per_absent_subject"));
-                policy.setStruckOffAfterAbsents(rs.getInt("struck_off_after_absents"));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return policy;
-    }
 
     public static int getFinePerAbsentSubject() {
         String sql = "SELECT fine_per_absent_subject FROM Policies ORDER BY id DESC LIMIT 1";

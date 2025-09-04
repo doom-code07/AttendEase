@@ -1,36 +1,27 @@
 package servlet;
 
 import dao.StudentDAO;
-
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
+import java.sql.Date;
+import java.time.LocalDate;
 
-@WebServlet("/parentMeetingDone")
 public class ParentMeetingDoneServlet extends HttpServlet {
-
-    private StudentDAO studentDAO = new StudentDAO();
-
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String sid = req.getParameter("studentId");
-        if (sid != null) {
-            try {
-                int studentId = Integer.parseInt(sid);
-                boolean ok = studentDAO.markParentMeetingDone(studentId);
-                if (!ok) {
-                    req.getSession().setAttribute("error", "Unable to update student with id " + studentId);
-                } else {
-                    req.getSession().setAttribute("message", "Student updated successfully.");
-                }
-            } catch (NumberFormatException e) {
-                req.getSession().setAttribute("error", "Invalid student id.");
-            }
-        } else {
-            req.getSession().setAttribute("error", "Student id missing.");
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
+        String historyIdStr = req.getParameter("historyId");
+        if (historyIdStr != null && !historyIdStr.isEmpty()) {
+            int historyId = Integer.parseInt(historyIdStr);
+            StudentDAO dao = new StudentDAO();
+
+            // Update the specific struck-off history row and reset attendance
+            dao.resetAfterParentMeeting(historyId, Date.valueOf(LocalDate.now()));
         }
 
-        resp.sendRedirect(req.getContextPath() + "/manageStruckOff");
+        // Redirect back to manage struck-off page
+        resp.sendRedirect("ManageStruckOffServlet");
     }
 }

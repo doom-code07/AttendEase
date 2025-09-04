@@ -80,12 +80,21 @@
                 List<StudentModel> students = selectedClassId != -1
                         ? studentDAO.getStudentsByClassId(selectedClassId)
                         : new ArrayList<>();
-                 List<StudentModel> struckOffStudents = (List<StudentModel>) request.getAttribute("struckOffStudents");
+
                 // Active leaves from servlet
                 List<LeaveOnDay> activeLeaves = (List<LeaveOnDay>) request.getAttribute("activeLeaves");
                 if (activeLeaves == null) {
                     activeLeaves = new ArrayList<>();
                 }
+
+
+
+                      students = selectedClassId != -1
+                           ? studentDAO.getStudentsWithStruckOffStatus(selectedClassId)
+                           : new ArrayList<>();
+
+
+
             %>
 
             <!-- Class selection form -->
@@ -111,34 +120,6 @@
 
 
 
-<h3>Struck Off Students</h3>
-<% if (struckOffStudents == null || struckOffStudents.isEmpty()) { %>
-    <p>No students are currently struck off.</p>
-<% } else { %>
-    <table border="1" cellpadding="8" cellspacing="0">
-        <thead>
-        <tr>
-            <th>#</th>
-            <th>Roll No</th>
-            <th>Name</th>
-            <th>Class</th>
-        </tr>
-        </thead>
-        <tbody>
-        <%
-            int i = 1;
-            for (StudentModel s : struckOffStudents) {
-        %>
-        <tr>
-            <td><%= i++ %></td>
-            <td><%= s.getRollNo() %></td>
-            <td><%= s.getName() %></td>
-            <td><%= s.getClassName() %></td>
-        </tr>
-        <% } %>
-        </tbody>
-    </table>
-<% } %>
 
 
 
@@ -184,14 +165,15 @@
                             <tr>
                                 <td><%= student.getRollNo() %></td>
                                 <td><%= student.getName() %></td>
-                                <td>
-                                    <select name="status_<%= student.getId() %>">
-                                        <option value="Present" selected>Present</option>
-                                        <option value="Absent">Absent</option>
-                                        <option value="Leave">Leave</option>
-                                        <option value="Struck Off">Struck Off</option>
-                                    </select>
-                                </td>
+                            <td>
+                                <select name="status_<%= student.getId() %>">
+                                    <option value="Present" <%= student.isCurrentlyStruckOff() ? "disabled" : "selected" %>>Present</option>
+                                    <option value="Absent"  <%= student.isCurrentlyStruckOff() ? "disabled" : "" %>>Absent</option>
+                                    <option value="Leave"   <%= student.isCurrentlyStruckOff() ? "disabled" : "" %>>Leave</option>
+                                    <option value="Struck Off" <%= student.isCurrentlyStruckOff() ? "selected" : "" %>>Struck Off</option>
+                                </select>
+                            </td>
+
                             </tr>
                         <% } %>
                         </tbody>

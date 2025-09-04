@@ -1,20 +1,26 @@
 package servlet;
 
 import dao.StudentDAO;
+import jakarta.servlet.ServletException;
 
-import jakarta.servlet.*;
 import jakarta.servlet.http.*;
-import java.io.IOException;
 
-public class MarkParentMeetingDoneServlet extends HttpServlet {
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            int studentId = Integer.parseInt(request.getParameter("studentId"));
+import java.io.IOException;
+import java.sql.Date;
+import java.time.LocalDate;
+
+
+public class ParentMeetingDoneServlet extends HttpServlet {
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
+        String studentIdStr = req.getParameter("studentId");
+        if (studentIdStr != null && !studentIdStr.isEmpty()) {
+            int studentId = Integer.parseInt(studentIdStr);
             StudentDAO dao = new StudentDAO();
-            dao.markParentMeetingDone(studentId);
-            response.sendRedirect("VicePrincipalStruckOffServlet");
-        } catch (Exception e) {
-            e.printStackTrace();
+            dao.resetAfterParentMeeting(studentId, Date.valueOf(LocalDate.now()));
         }
+        resp.sendRedirect("ManageStruckOffServlet");
     }
 }

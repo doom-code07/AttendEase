@@ -69,4 +69,25 @@ public class AttendancePolicyDAO {
         if (rs.next()) return rs.getInt(1);
         return 0;
     }
+
+    public PolicyModel getCurrentPolicy() {
+        String sql = "SELECT id, min_attendance_percentage, fine_per_absent_subject, struck_off_after_absents " +
+                "FROM Policies ORDER BY id DESC LIMIT 1";
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    PolicyModel p = new PolicyModel();
+                    p.setId(rs.getInt("id"));
+                    p.setMinAttendancePercentage(rs.getInt("min_attendance_percentage"));
+                    p.setFinePerAbsentSubject(rs.getInt("fine_per_absent_subject"));
+                    p.setStruckOffAfterAbsents(rs.getInt("struck_off_after_absents"));
+                    return p;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null; // If no policy yet, caller should guard against null.
+    }
 }
