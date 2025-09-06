@@ -21,7 +21,7 @@
     <aside class="sidebar">
         <h2>Vice Principal</h2>
         <ul>
-            <li><a href="manage_struckOff.jsp">
+            <li><a href="ManageStruckOffServlet">
                 <i class="fas fa-user-times"></i> Manage Struck Off
             </a></li>
             <li><a href="set_policies.jsp" class="active">

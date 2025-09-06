@@ -21,11 +21,21 @@ public class LoginServlet extends HttpServlet {
             UserModel user = dao.validateUser(username, password);
 
             if (user != null) {
-                HttpSession session = request.getSession(); // ✅ Declare session here
+                UserDAO userDAO = new UserDAO();  // ✅ create DAO instance to check verification
+                int userId = user.getId();
+                String userEmail = user.getEmail();
 
-                session.setAttribute("user", user);          // store full user object
-                session.setAttribute("userId", user.getId()); // store user ID for all roles
+                // ✅ check email verification before proceeding
+                if (!userDAO.isEmailVerifiedByUserId(userId)) {
+                    request.setAttribute("emailPrefill", userEmail);
+                    request.setAttribute("message", "Email not verified. Check your inbox or resend verification.");
+                    request.getRequestDispatcher("verification_pending.jsp").forward(request, response);
+                    return; // stop login
+                }
 
+                HttpSession session = request.getSession(); // only create session if verified
+                session.setAttribute("user", user);
+                session.setAttribute("userId", userId);
                 switch (user.getRole()) {
                     case "admin":
                         response.sendRedirect("admin_dashboard.jsp");
