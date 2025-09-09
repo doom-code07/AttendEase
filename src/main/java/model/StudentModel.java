@@ -64,14 +64,6 @@ public class StudentModel {
 
     public StudentModel(){}
 
-/*
-    public StudentModel(int id, String batch, String rollNo, int userId) {
-        this.id = id;
-        this.batch = batch;
-        this.rollNo = rollNo;
-        this.userId = userId;
-    }
-*/
     public int getId() {
         return id;
     }

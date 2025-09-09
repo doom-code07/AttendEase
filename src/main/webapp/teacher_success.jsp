@@ -12,7 +12,7 @@
         <span class="icon success-icon">&#10004;</span>
         <h2 class="success">Success</h2>
         <p>Your action was completed successfully.</p>
-        <a href ="index.jsp"><button class="approve-btn" >Login Now</button></a>
+        <a href ="ManageTeacherServlet"><button class="approve-btn" >View Teachers</button></a>
     </div>
 </body>
 </html>

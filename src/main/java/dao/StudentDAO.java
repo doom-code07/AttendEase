@@ -34,15 +34,11 @@ public class StudentDAO {
 
             ResultSet rs = ps.getGeneratedKeys();
             if (rs.next()) {
-                return rs.getInt(1); // student.id
+                return rs.getInt(1);
             }
         }
         return -1;
     }
-
-
-
-
 
 
     public List<StudentModel> getAllStudents() throws Exception {
@@ -195,8 +191,6 @@ public class StudentDAO {
                 sm.setCnic(rs.getString("cnic"));
                 sm.setRollNo(rs.getString("roll_no"));
                 sm.setBatch(rs.getString("batch"));
-
-                // ✅ Add struck off fields
                 sm.setStruckOff(rs.getBoolean("is_struck_off"));
                 sm.setStruckOffDate(rs.getDate("struck_off_date"));
                 sm.setParentMeetingDone(rs.getBoolean("parent_meeting_done"));
@@ -245,7 +239,6 @@ public class StudentDAO {
                 student.setId(rs.getInt("id"));
                 student.setRollNo(rs.getString("roll_no"));
                 student.setBatch(rs.getString("batch"));
-                // Add other attributes if needed
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -270,7 +263,6 @@ public class StudentDAO {
              PreparedStatement attendanceStmt = con.prepareStatement(attendanceQuery);
              PreparedStatement policyStmt = con.prepareStatement(policyQuery)) {
 
-            // Get absents count
             attendanceStmt.setInt(1, studentId);
             ResultSet rsAbsents = attendanceStmt.executeQuery();
 
@@ -279,7 +271,6 @@ public class StudentDAO {
                 totalAbsents = rsAbsents.getInt("total_absents");
             }
 
-            // Get policy
             ResultSet rsPolicy = policyStmt.executeQuery();
             int finePerAbsent = 0;
             int struckOffThreshold = 0;
@@ -288,17 +279,14 @@ public class StudentDAO {
                 struckOffThreshold = rsPolicy.getInt("struck_off_after_absents");
             }
 
-            // Calculate fine
             int totalFine = totalAbsents * finePerAbsent;
 
-            // Update fine
             try (PreparedStatement updateFineStmt = con.prepareStatement(updateFineQuery)) {
                 updateFineStmt.setInt(1, totalFine);
                 updateFineStmt.setInt(2, studentId);
                 updateFineStmt.executeUpdate();
             }
 
-            // Strike off if absents exceed threshold
             if (totalAbsents >= struckOffThreshold) {
                 try (PreparedStatement strikeStmt = con.prepareStatement(strikeOffQuery)) {
                     strikeStmt.setInt(1, studentId);
@@ -308,41 +296,23 @@ public class StudentDAO {
         }
     }
 
-
-    /** Call this before rendering the mark_attendance table for a class. */
     public void applyMonthlyStruckOffPolicyForClass(int classId, int threshold, int year, int month) {
-        // Fetch all student IDs in this class
-        String studentsSql = "SELECT s.id FROM student s " +
-                "JOIN class_students cs ON cs.student_id = s.id " +
-                "WHERE cs.class_id = ?";
-
+        String studentsSql = "SELECT s.id FROM student s JOIN class_students cs ON cs.student_id = s.id WHERE cs.class_id = ?";
         AttendanceDAO attendanceDAO = new AttendanceDAO();
 
         try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(studentsSql)) {
-
             ps.setInt(1, classId);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     int studentId = rs.getInt("id");
-                    int absentCount = attendanceDAO.countAbsentsThisMonth(studentId, year, month);
-
-                    if (absentCount >= threshold) {
-                        // Find the Nth absent date (when threshold reached)
-                        java.util.List<java.sql.Date> dates = attendanceDAO.getAbsentDatesThisMonthAsc(studentId, year, month);
-
-                        java.sql.Date thresholdDate = dates.size() >= threshold
-                                ? dates.get(threshold - 1)
-                                : java.sql.Date.valueOf(java.time.LocalDate.now());
-
-                        // Update student flags (only if not already struck off for this month)
+                    java.sql.Date thresholdDate = attendanceDAO.findConsecutiveThresholdDate(studentId, year, month, threshold);
+                    if (thresholdDate != null) {
                         markStruckOffEvent(studentId, thresholdDate);
                     }
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception e) { e.printStackTrace(); }
     }
 
     public boolean hasActiveStruckOff(int studentId, int year, int month) {
@@ -373,12 +343,10 @@ public class StudentDAO {
              PreparedStatement ps = con.prepareStatement(insertHistory);
              PreparedStatement ps2 = con.prepareStatement(updateAttendance)) {
 
-            // Insert new struck-off history row
             ps.setInt(1, studentId);
             ps.setDate(2, struckOffDate);
             ps.executeUpdate();
 
-            // Mark attendance for that date
             ps2.setInt(1, studentId);
             ps2.setDate(2, struckOffDate);
             ps2.executeUpdate();
@@ -389,101 +357,13 @@ public class StudentDAO {
     }
 
 
-    /*
-    private void markStruckOffIfNotAlready(int studentId, Date struckOffDate) {
-        String checkSql = "SELECT is_struck_off, parent_meeting_done FROM student WHERE id = ?";
-        String updateSql = "UPDATE student SET is_struck_off = TRUE, struck_off_date = ?, parent_meeting_done = FALSE WHERE id = ?";
-        String updateAttendanceSql = "UPDATE Attendance_Register SET status = 'Struck Off' WHERE student_id = ? AND date = ?";
-
-        try (Connection con = DBConnection.getConnection();
-             PreparedStatement checkPs = con.prepareStatement(checkSql)) {
-
-            checkPs.setInt(1, studentId);
-            try (ResultSet rs = checkPs.executeQuery()) {
-                if (rs.next()) {
-                    boolean isStruckOff = rs.getBoolean("is_struck_off");
-                    boolean parentMeetingDone = rs.getBoolean("parent_meeting_done");
-
-                    // ✅ Allow struck off if not struck off OR meeting was already done (reset case)
-                    if (!isStruckOff || parentMeetingDone) {
-                        // update student struck off flag
-                        try (PreparedStatement ps = con.prepareStatement(updateSql)) {
-                            ps.setDate(1, struckOffDate);
-                            ps.setInt(2, studentId);
-                            ps.executeUpdate();
-                        }
-                        // also mark attendance as Struck Off for that date
-                        try (PreparedStatement ps2 = con.prepareStatement(updateAttendanceSql)) {
-                            ps2.setInt(1, studentId);
-                            ps2.setDate(2, struckOffDate);
-                            ps2.executeUpdate();
-                        }
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-*/
-
-/*
-    public void resetAfterParentMeeting(int studentId, Date meetingDoneDate) {
-        String sql = "UPDATE student SET is_struck_off=FALSE, parent_meeting_done=TRUE, meeting_done_date=? WHERE id=?";
-        try (Connection con = DBConnection.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setDate(1, meetingDoneDate);
-            ps.setInt(2, studentId);
-            ps.executeUpdate();
-        } catch (Exception e) { e.printStackTrace(); }
-
-    }
-*/
-    /*
-
     public boolean resetAfterParentMeeting(int historyId, Date meetingDoneDate) {
         String updateHistory = "UPDATE student_struck_off_history " +
                 "SET meeting_done_date = ?, parent_meeting_done = TRUE " +
                 "WHERE id = ?";
 
-        String updateAttendance = "UPDATE Attendance_Register " +
-                "SET status = 'Present' " +
-                "WHERE student_id = (SELECT student_id FROM student_struck_off_history WHERE id = ?) " +
-                "AND status = 'Struck Off'";
-
         try (Connection con = DBConnection.getConnection()) {
-            // Update history row
-            try (PreparedStatement ps = con.prepareStatement(updateHistory)) {
-                ps.setDate(1, meetingDoneDate);
-                ps.setInt(2, historyId);
-                ps.executeUpdate();
-            }
 
-            // Reset attendance
-            try (PreparedStatement ps2 = con.prepareStatement(updateAttendance)) {
-                ps2.setInt(1, historyId);
-                ps2.executeUpdate();
-            }
-
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-*/
-
-
-    public boolean resetAfterParentMeeting(int historyId, Date meetingDoneDate) {
-        String updateHistory = "UPDATE student_struck_off_history " +
-                "SET meeting_done_date = ?, parent_meeting_done = TRUE " +
-                "WHERE id = ?";
-
-        // Remove updateAttendance (we don’t touch old attendance records)
-
-        try (Connection con = DBConnection.getConnection()) {
-            // Update struck-off history record
             try (PreparedStatement ps = con.prepareStatement(updateHistory)) {
                 ps.setDate(1, meetingDoneDate);
                 ps.setInt(2, historyId);
@@ -497,40 +377,6 @@ public class StudentDAO {
         }
     }
 
-
-
-    /*
-    public List<StruckOffRow> getStruckOffRows() {
-        String sql = "SELECT s.id AS student_id, u.name AS student_name, s.roll_no, c.name AS class_name, " +
-                "       s.struck_off_date, s.meeting_done_date, s.parent_meeting_done, s.is_struck_off " +
-                "FROM student s " +
-                "JOIN users u ON u.id = s.Users_id " +
-                "LEFT JOIN class_students cs ON cs.student_id = s.id " +
-                "LEFT JOIN class c ON c.id = cs.class_id " +
-                "WHERE s.struck_off_date IS NOT NULL " +   // ✅ keep history
-                "ORDER BY c.name, u.name";
-
-        List<StruckOffRow> list = new ArrayList<>();
-        try (Connection con = DBConnection.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-
-            while (rs.next()) {
-                list.add(new StruckOffRow(
-                        rs.getInt("student_id"),
-                        rs.getString("roll_no"),
-                        rs.getString("student_name"),
-                        rs.getString("class_name"),
-                        rs.getDate("struck_off_date"),
-                        rs.getDate("meeting_done_date"),
-                        rs.getBoolean("parent_meeting_done"),
-                        rs.getBoolean("is_struck_off")   // ✅ pass current status also
-                ));
-            }
-        } catch (Exception e) { e.printStackTrace(); }
-        return list;
-    }
-*/
 
     public List<StruckOffRow> getStruckOffRows() {
         String sql = "SELECT h.id AS history_id, s.id AS student_id, u.name AS student_name, s.roll_no, c.name AS class_name, " +
@@ -549,15 +395,15 @@ public class StudentDAO {
 
             while (rs.next()) {
                 list.add(new StruckOffRow(
-                        rs.getInt("history_id"),                  // 1. historyId
-                        rs.getInt("student_id"),                  // 2. studentId
-                        rs.getString("roll_no"),                  // 3. rollNo
-                        rs.getString("student_name"),             // 4. studentName
-                        rs.getString("class_name"),               // 5. className
-                        rs.getDate("struck_off_date"),            // 6. struckOffDate
-                        rs.getDate("meeting_done_date"),          // 7. meetingDoneDate
-                        rs.getBoolean("parent_meeting_done"),     // 8. parentMeetingDone
-                        rs.getDate("struck_off_date") != null     // 9. isStruckOff (true if struckOffDate exists)
+                        rs.getInt("history_id"),
+                        rs.getInt("student_id"),
+                        rs.getString("roll_no"),
+                        rs.getString("student_name"),
+                        rs.getString("class_name"),
+                        rs.getDate("struck_off_date"),
+                        rs.getDate("meeting_done_date"),
+                        rs.getBoolean("parent_meeting_done"),
+                        rs.getDate("struck_off_date") != null
                 ));
             }
         } catch (Exception e) {
@@ -576,7 +422,7 @@ public class StudentDAO {
                 "JOIN class_students cs ON cs.student_id = s.id " +
                 "LEFT JOIN (" +
                 "    SELECT * FROM student_struck_off_history " +
-                "    WHERE parent_meeting_done = FALSE" + // only active struck-off
+                "    WHERE parent_meeting_done = FALSE" +
                 ") h ON h.student_id = s.id " +
                 "WHERE cs.class_id = ?";
 
@@ -602,8 +448,6 @@ public class StudentDAO {
         return students;
     }
 
-
-    // Inside StudentDAO.java
     public int countAbsentsThisMonth(int studentId, int year, int month) {
         int count = 0;
         String sql = "SELECT COUNT(*) AS total_absent FROM Attendance_Register " +
@@ -626,34 +470,6 @@ public class StudentDAO {
         return count;
     }
 
-
-
-
-
-    /*public List<StudentModel> getStruckOffStudents() throws SQLException {
-        List<StudentModel> list = new ArrayList<>();
-        String sql = "SELECT s.id, s.name, s.roll_number, c.name AS class_name " +
-                "FROM student s " +
-                "JOIN class c ON s.class_id = c.id " +
-                "WHERE s.is_struck_off = TRUE";
-
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-
-            while (rs.next()) {
-                StudentModel student = new StudentModel();
-                student.setId(rs.getInt("id"));
-                student.setName(rs.getString("name"));
-                student.setRollNo(rs.getString("roll_number"));
-                student.setClassName(rs.getString("class_name")); // make sure StudentModel has this field
-                list.add(student);
-            }
-        }
-        return list;
-    }
-*/
-    //for application purpose
 
     public static Student findByUsersId(int userId) {
         Student student = null;
@@ -723,7 +539,7 @@ public class StudentDAO {
                     student.setId(rs.getInt("student_id"));
                     student.setRollNo(rs.getString("roll_no"));
                     student.setBatch(rs.getString("batch"));
-                    student.setName(rs.getString("student_name")); // from users table
+                    student.setName(rs.getString("student_name"));
                 }
             }
         } catch (SQLException e) {
@@ -739,7 +555,7 @@ public class StudentDAO {
         public String className;
         public String rollNo;
         public String studentName;
-        public Integer totalFineNullable; // can be null
+        public Integer totalFineNullable;
 
         public StudentInfo(int studentId, int classId, String className, String rollNo, String studentName, Integer totalFineNullable) {
             this.studentId = studentId;
@@ -751,7 +567,6 @@ public class StudentDAO {
         }
     }
 
-    // Find student by roll_no with class and user name
     public static StudentInfo findByRoll(String rollNo) {
         String sql =
                 "SELECT s.id AS student_id, s.roll_no, cs.class_id, c.name AS class_name, u.name AS student_name, s.total_fine " +
@@ -779,7 +594,6 @@ public class StudentDAO {
         return null;
     }
 
-    // Get all students in a class with names & roll nos
     public static java.util.List<StudentInfo> getStudentsByClass(int classId) {
         java.util.List<StudentInfo> list = new java.util.ArrayList<>();
         String sql =

@@ -19,15 +19,18 @@
             <input type="email" id="email" name="email" required>
 
             <label for="cnic">CNIC</label>
-            <input type="text" id="cnic" name="cnic" pattern="\d{13}" title="Enter 13-digit CNIC" required>
+            <input type="text" id="cnic" name="cnic" placeholder = " Enter 13 digits without dashes"
+            pattern="\d{13}" title="Enter 13-digit CNIC" required>
 
             <label for="username">Username</label>
             <input type="text" id="username" name="username" required>
 
             <label for="password">Password</label>
-            <input type="password" id="password" name="password" required
-                   pattern="^(?=.*\d).{8,}$"
-                   title="Password must be at least 8 characters long and include at least one digit.">
+            <input type="password" id="password" name="password"
+            placeholder ="Enter atleast one capital letter,digit and special character"
+            required
+                   pattern="^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\-={}\[\]:;'<>.,?/~`]).{8,}$"
+                          title="Password must be at least 8 characters long, contain one uppercase letter, one digit, and one special character.">
 
             <label for="rollno">Roll No</label>
             <input type="text" name="rollno" required

@@ -107,8 +107,6 @@ public class UserDAO {
         }
     }
 
-    //e mail verification fun
-// returns user id or null if not found
     public Integer getUserIdByEmail(String email) throws Exception {
         String sql = "SELECT id FROM users WHERE email = ?";
         try (Connection conn = DBConnection.getConnection();
@@ -121,7 +119,6 @@ public class UserDAO {
         }
     }
 
-    // save token & expiry (same as earlier)
     public void saveVerificationToken(int userId, String token, LocalDateTime expiry) throws Exception {
         String sql = "UPDATE users SET verification_token = ?, token_expiry = ?, email_verified = false WHERE id = ?";
         try (Connection conn = DBConnection.getConnection();
@@ -133,7 +130,6 @@ public class UserDAO {
         }
     }
 
-    // returns user id if token valid and not expired; otherwise -1
     public int verifyToken(String token) throws Exception {
         String select = "SELECT id, token_expiry FROM users WHERE verification_token = ?";
         try (Connection conn = DBConnection.getConnection();
@@ -146,7 +142,7 @@ public class UserDAO {
                 if (expiry == null || expiry.before(new Timestamp(System.currentTimeMillis()))) {
                     return -2; // expired
                 }
-                // mark verified and clear token
+
                 String upd = "UPDATE users SET email_verified = true, verification_token = NULL, token_expiry = NULL WHERE id = ?";
                 try (PreparedStatement ps2 = conn.prepareStatement(upd)) {
                     ps2.setInt(1, userId);
@@ -157,7 +153,6 @@ public class UserDAO {
         }
     }
 
-    // check verified status
     public boolean isEmailVerifiedByUserId(int userId) throws Exception {
         String sql = "SELECT email_verified FROM users WHERE id = ?";
         try (Connection conn = DBConnection.getConnection();
@@ -170,7 +165,6 @@ public class UserDAO {
         }
     }
 
-    // e mail verification fun
     public void updatePasswordByEmail(String email, String newHashedPassword) throws Exception {
         String sql = "UPDATE users SET password = ? WHERE email = ?";
         try (Connection con = DBConnection.getConnection()) {

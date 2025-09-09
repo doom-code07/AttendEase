@@ -22,10 +22,9 @@ public class SubjectDAO {
         ResultSet rs = checkStmt.executeQuery();
         if (rs.next()) {
             conn.close();
-            return; // Subject already exists in this class
+            return;
         }
 
-        // Insert subject into subject table
         String insertSubject = "INSERT INTO subject(title, code) VALUES(?, ?)";
         PreparedStatement insertStmt = conn.prepareStatement(insertSubject, Statement.RETURN_GENERATED_KEYS);
         insertStmt.setString(1, title);
@@ -37,7 +36,6 @@ public class SubjectDAO {
             subjectId = generatedKeys.getInt(1);
         }
 
-        // Insert into class_subjects
         String link = "INSERT INTO class_subjects(class_id, subject_id) VALUES(?, ?)";
         PreparedStatement linkStmt = conn.prepareStatement(link);
         linkStmt.setInt(1, classId);
@@ -69,14 +67,13 @@ public class SubjectDAO {
 
     public void deleteSubjectFromClass(int subjectId, int classId) {
         try (Connection conn = DBConnection.getConnection()) {
-            // Remove from class_subjects
+
             String deleteClassSubject = "DELETE FROM class_subjects WHERE subject_id=? AND class_id=?";
             PreparedStatement stmt1 = conn.prepareStatement(deleteClassSubject);
             stmt1.setInt(1, subjectId);
             stmt1.setInt(2, classId);
             stmt1.executeUpdate();
 
-            // Delete from subject table if not used elsewhere
             String check = "SELECT COUNT(*) FROM class_subjects WHERE subject_id=?";
             PreparedStatement checkStmt = conn.prepareStatement(check);
             checkStmt.setInt(1, subjectId);
@@ -161,8 +158,6 @@ public class SubjectDAO {
         con.close();
     }
 
-
-    // Get all assigned subjects with teacher info
     public List<Map<String, String>> getAssignedSubjects() throws Exception {
         List<Map<String, String>> list = new ArrayList<>();
         Connection con = DBConnection.getConnection();
@@ -189,7 +184,6 @@ public class SubjectDAO {
         return list;
     }
 
-    // Unassign one subject
     public void unassignSubject(int subjectId) throws Exception {
         Connection con = DBConnection.getConnection();
         String sql = "UPDATE subject SET teacher_id = NULL WHERE id = ?";
@@ -199,7 +193,6 @@ public class SubjectDAO {
         con.close();
     }
 
-    // Unassign all subjects
     public void unassignAllSubjects() throws Exception {
         Connection con = DBConnection.getConnection();
         String sql = "UPDATE subject SET teacher_id = NULL";

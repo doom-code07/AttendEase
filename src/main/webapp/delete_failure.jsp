@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Failure</title>
+    <title>Delete Failure</title>
     <link rel="stylesheet" href="css/failure.css">
     <link rel="stylesheet" href="css/application_buttons.css">
 </head>
@@ -12,7 +12,7 @@
         <span class="icon failure-icon">&#10006;</span>
         <h2 class="failure">Failure</h2>
         <p>Something Went Wrong. Please try again.</p>
-        <a href ="index.jsp"><button class="decline-btn" >Retry</button></a>
+        <a href ="ManageStudentServlet"><button class="decline-btn" >Retry</button></a>
     </div>
 
 </body>

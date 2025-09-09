@@ -30,7 +30,6 @@ public class LeaveApplicationDAO {
         }
     }
 
-    // Get applications for a teacher (pending)
     public List<LeaveApplication> findForTeacher(int teacherId) throws Exception {
         List<LeaveApplication> applications = new ArrayList<>();
 
@@ -64,8 +63,6 @@ public class LeaveApplicationDAO {
         return applications;
     }
 
-
-    // Get applications for Vice Principal (those with is_teacher_application = false)
     public List<LeaveApplication> findForVicePrincipal() throws Exception {
         List<LeaveApplication> list = new ArrayList<>();
         String sql = "SELECT la.*, s.roll_no, u.name, c.name AS class_name " +
@@ -88,8 +85,6 @@ public class LeaveApplicationDAO {
                 app.setEndDate(rs.getDate("end_date"));
                 app.setDescription(rs.getString("description"));
                 app.setStatus(rs.getString("status"));
-
-                // extra fields
                 app.setRollNo(rs.getString("roll_no"));
                 app.setStudentName(rs.getString("name"));
                 app.setClassName(rs.getString("class_name"));
@@ -100,8 +95,6 @@ public class LeaveApplicationDAO {
         return list;
     }
 
-
-    // In LeaveApplicationDAO.java
     public List<LeaveApplication> findByStudent(int studentId) throws Exception {
         List<LeaveApplication> applications = new ArrayList<>();
         String sql = "SELECT id, status, description, start_date, end_date, decision_date " +
@@ -156,10 +149,6 @@ public class LeaveApplicationDAO {
         return a;
     }
 
-
-
-
-    // Minimal fields needed for attendance update
     public static LeaveApplication getApplicationById(int applicationId) {
         String sql = "SELECT id, applicant_id, start_date, end_date, status " +
                 "FROM LeaveApplication WHERE id = ?";
@@ -246,7 +235,7 @@ public class LeaveApplicationDAO {
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt(1) > 0; // true if already submitted
+                    return rs.getInt(1) > 0;
                 }
             }
         }
@@ -257,7 +246,7 @@ public class LeaveApplicationDAO {
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             int rows = ps.executeUpdate();
-            return rows > 0;  // true if any applications were deleted
+            return rows > 0;
         } catch (Exception e) {
             e.printStackTrace();
         }

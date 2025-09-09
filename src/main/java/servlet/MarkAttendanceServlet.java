@@ -23,7 +23,6 @@ public class MarkAttendanceServlet extends HttpServlet {
         Map<String, String[]> parameterMap = request.getParameterMap();
         boolean duplicateFound = false;
 
-        // Fetch threshold from Policies table
         int threshold = 0;
         try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(
@@ -36,21 +35,19 @@ public class MarkAttendanceServlet extends HttpServlet {
             e.printStackTrace();
         }
 
-        // Loop through all student status inputs
         for (String paramName : parameterMap.keySet()) {
             if (paramName.startsWith("status_")) {
                 int studentId = Integer.parseInt(paramName.substring(7));
                 String status = request.getParameter(paramName);
 
                 try {
-                    // Check duplicate attendance
+
                     if (attendanceDAO.attendanceExists(studentId, classId, subjectId, sqlDate)) {
                         duplicateFound = true;
-                        System.out.println("⚠️ Attendance already marked for student " + studentId + " on " + sqlDate);
+                        System.out.println(" Attendance already marked for student " + studentId + " on " + sqlDate);
                         continue;
                     }
 
-                    // Mark attendance for all statuses
                     AttendanceModel attendance = new AttendanceModel();
                     attendance.setDate(sqlDate);
                     attendance.setClassId(classId);
@@ -59,17 +56,17 @@ public class MarkAttendanceServlet extends HttpServlet {
                     attendance.setStatus(status);
                     attendanceDAO.markAttendance(attendance);
 
-                    // Apply struck-off policy ONLY if status is "Absent"
                     if ("Absent".equalsIgnoreCase(status)) {
                         int year = sqlDate.toLocalDate().getYear();
                         int month = sqlDate.toLocalDate().getMonthValue();
-                        int absentCount = studentDAO.countAbsentsThisMonth(studentId, year, month);
 
-                        if (absentCount >= threshold) {
-                            // Always mark struck-off when threshold reached
-                            studentDAO.markStruckOffEvent(studentId, sqlDate);
+                        java.sql.Date thresholdDate = attendanceDAO.findConsecutiveThresholdDate(studentId, year, month, threshold);
+                        if (thresholdDate != null) {
+
+                            studentDAO.markStruckOffEvent(studentId, thresholdDate);
                         }
                     }
+
 
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -79,7 +76,6 @@ public class MarkAttendanceServlet extends HttpServlet {
             }
         }
 
-        // Forward error if duplicate found
         if (duplicateFound) {
             request.setAttribute("error", "Some attendance records were already marked for this date.");
             RequestDispatcher rd = request.getRequestDispatcher("mark_attendance.jsp");

@@ -17,8 +17,8 @@
     <form action="ResetPasswordServlet" method="post">
     <h2>Reset Password</h2>
         <label for="password">Enter your new password:</label><br>
-        <input type="password" id="password" name="newPassword" pattern="^(?=.*\d).{8,}$"
-                                                                                   title="Password must be at least 8 characters long and include at least one digit." required><br><br>
+        <input type="password" id="password" name="newPassword" pattern="^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\-={}\[\]:;'<>.,?/~`]).{8,}$"
+                                                                       title="Password must be at least 8 characters long, contain one uppercase letter, one digit, and one special character." required><br><br>
         <input type="submit" value="Reset Password">
     </form>
 </body>

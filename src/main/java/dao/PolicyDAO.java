@@ -8,7 +8,6 @@ import java.util.List;
 
 public class PolicyDAO {
 
-    // Insert a new policy
     public void addPolicy(PolicyModel policy) throws Exception {
         Connection con = DBConnection.getConnection();
         String sql = "INSERT INTO Policies (min_attendance_percentage, fine_per_absent_subject, struck_off_after_absents) VALUES (?, ?, ?)";
@@ -20,7 +19,6 @@ public class PolicyDAO {
         con.close();
     }
 
-    // Update the existing policy (assuming only one row exists)
     public void updatePolicy(PolicyModel policy) throws Exception {
         Connection con = DBConnection.getConnection();
         // Using a subquery to target the single row, since you expect only one
@@ -33,7 +31,6 @@ public class PolicyDAO {
         con.close();
     }
 
-    // Check if a policy record exists
     public boolean policyExists() throws Exception {
         Connection con = DBConnection.getConnection();
         String sql = "SELECT COUNT(*) FROM Policies";
@@ -65,10 +62,9 @@ public class PolicyDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null; // If no policy yet, caller should guard against null.
+        return null;
     }
 
-    // Retrieve current policy (if needed for display)
     public PolicyModel getPolicy() throws Exception {
         PolicyModel policy = null;
         Connection con = DBConnection.getConnection();
@@ -86,7 +82,6 @@ public class PolicyDAO {
         return policy;
     }
 
-    // Optionally, a method to delete a policy if needed
     public void deletePolicy(int id) throws Exception {
         Connection con = DBConnection.getConnection();
         String sql = "DELETE FROM Policies WHERE id = ?";

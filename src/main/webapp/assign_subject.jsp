@@ -98,7 +98,7 @@
                 <tr>
                     <td><%= row.get("name") %></td>
                     <td><%= row.get("cnic") %></td>
-                    <td><%= row.get("title") %></td>
+                    <td><%= row.get("title") %><%= row.get("Code") %></td>
                     <td>
                         <form action="UnassignSubjectServlet" method="post" style="display:inline;">
                             <input type="hidden" name="subjectId" value="<%= row.get("subject_id") %>"/>

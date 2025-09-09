@@ -19,29 +19,27 @@ public class AddTeacherServlet extends HttpServlet {
             String name = request.getParameter("name");
             String username = request.getParameter("username");
             String password = request.getParameter("password");
-            if (password.length() < 8 || !password.matches(".*\\d.*")) {
-                response.getWriter().println("Error: Password must be at least 8 characters long and contain at least one digit.");
+            String passwordPattern = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\\-={}\\[\\]:;'<>.,?/~`]).{8,}$";
+
+            if (!password.matches(passwordPattern)) {
+                response.sendRedirect("duplicate_teacher.jsp");
                 return;
             }
             String email = request.getParameter("email");
             String cnic = request.getParameter("cnic");
             if (!cnic.matches("\\d{13}")) {
-                response.getWriter().println("Error: CNIC must be exactly 13 digits without dashes.");
+                response.sendRedirect("duplicate_teacher.jsp");
                 return;
             }
             String qualification = request.getParameter("qualification");
 
-            if (password.length() < 8 || !password.matches(".*\\d.*")) {
-                response.getWriter().println("Error: Password must be at least 8 characters long and contain at least one digit.");
-                return;
-            }
 
             String hashedPassword = PasswordUtil.hashPassword(password);
 
             UserModel user = new UserModel();
             user.setName(name);
             user.setUsername(username);
-            user.setPassword(hashedPassword);  // use hashed password
+            user.setPassword(hashedPassword);
             user.setEmail(email);
             user.setCnic(cnic);
             user.setRole("teacher");
@@ -51,10 +49,10 @@ public class AddTeacherServlet extends HttpServlet {
 
             new TeacherDAO().addTeacher(user, teacher);
 
-            response.sendRedirect("manage_teachers.jsp");
+            response.sendRedirect("teacher_success.jsp");
         } catch (Exception e) {
             e.printStackTrace();
-            response.getWriter().println("Error adding teacher: " + e.getMessage());
+            response.sendRedirect("duplicate_teacher.jsp");
         }
     }
 }

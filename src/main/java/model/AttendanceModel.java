@@ -4,7 +4,7 @@ import java.sql.Date;
 
 public class AttendanceModel {
     private int id;
-    private Date date; // ← change from String to java.sql.Date
+    private Date date;
     private int classId;
     private int studentId;
     private int subjectId;
@@ -23,7 +23,7 @@ public class AttendanceModel {
     }
 
     public void setDate(Date date) {
-        this.date = date;  // No conversion issue now
+        this.date = date;
     }
 
     public int getClassId() {

@@ -18,15 +18,18 @@
 
             <label>Password:</label>
             <input type="password" name="password"
-                   required
-                   pattern="(?=.*\d).{8,}"
-                   title="Must be at least 8 characters and contain at least one digit">
+            placeholder ="Enter atleast one capital letter,digit and special character"
+                   pattern="^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\-={}\[\]:;'<>.,?/~`]).{8,}$"
+                          title="Password must be at least 8 characters long, contain one uppercase letter, one digit, and one special character."
+
+                          required>
 
             <label>Email:</label>
             <input type="email" name="email" required>
 
             <label>CNIC:</label>
             <input type="text" name="cnic"
+            placeholder = " Enter 13 digits without dashes"
                    required
                    pattern="\d{13}"
                    title="Enter 13 digit CNIC without dashes">

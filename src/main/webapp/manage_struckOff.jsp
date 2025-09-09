@@ -80,7 +80,7 @@
             <button type="submit">Done</button>
         </form>
     <% } else if (r.getStruckOffDate() != null && r.getMeetingDoneDate() != null) { %>
-        ✅ Done
+        Done
     <% } else { %>
         -
     <% } %>

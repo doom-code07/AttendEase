@@ -21,17 +21,17 @@ public class LoginServlet extends HttpServlet {
             UserModel user = dao.validateUser(username, password);
 
             if (user != null) {
-                UserDAO userDAO = new UserDAO();  // ✅ create DAO instance to check verification
+                UserDAO userDAO = new UserDAO();
                 int userId = user.getId();
-                String userEmail = user.getEmail();
+              /*  String userEmail = user.getEmail();
 
-                // ✅ check email verification before proceeding
+                //  check email verification before proceeding
                 if (!userDAO.isEmailVerifiedByUserId(userId)) {
                     request.setAttribute("emailPrefill", userEmail);
                     request.setAttribute("message", "Email not verified. Check your inbox or resend verification.");
                     request.getRequestDispatcher("verification_pending.jsp").forward(request, response);
                     return; // stop login
-                }
+                } */
 
                 HttpSession session = request.getSession(); // only create session if verified
                 session.setAttribute("user", user);
@@ -46,7 +46,7 @@ public class LoginServlet extends HttpServlet {
                         TeacherDAO teacherDAO = new TeacherDAO();
                         int teacherId = teacherDAO.getTeacherIdByUserId(user.getId());
 
-                        session.setAttribute("teacherId", teacherId); // ✅ fixed session
+                        session.setAttribute("teacherId", teacherId);
                         response.sendRedirect("teacher_dashboard.jsp");
                         break;
 
@@ -54,7 +54,7 @@ public class LoginServlet extends HttpServlet {
 
                         int usersId = user.getId(); // from users table
                         StudentDAO StudentDAO = new StudentDAO();
-                        int studentId = StudentDAO.getStudentIdByUsersId(usersId); // get student.id from student table
+                        int studentId = StudentDAO.getStudentIdByUsersId(usersId);
                         session.setAttribute("studentId", studentId);
                         response.sendRedirect("StudentDashboardServlet");
                         break;
@@ -72,7 +72,7 @@ public class LoginServlet extends HttpServlet {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            response.getWriter().println("Login failed due to server error.");
+                response.sendRedirect("failure.jsp");
         }
     }
 }

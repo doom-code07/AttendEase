@@ -17,7 +17,6 @@ public class TeacherDAO {
     public void addTeacher(UserModel user, TeacherModel teacher) throws Exception {
         Connection con = DBConnection.getConnection();
 
-        // Step 1: Insert user
         String insertUserSql = "INSERT INTO users (name, username, password, email, cnic, role) VALUES (?, ?, ?, ?, ?, ?)";
         PreparedStatement psUser = con.prepareStatement(insertUserSql, Statement.RETURN_GENERATED_KEYS);
         psUser.setString(1, user.getName());
@@ -28,12 +27,10 @@ public class TeacherDAO {
         psUser.setString(6, "teacher");
         psUser.executeUpdate();
 
-        // Get generated user ID
         ResultSet rs = psUser.getGeneratedKeys();
         if (rs.next()) {
             int userId = rs.getInt(1);
 
-            // Insert teacher using user's ID
             String insertTeacherSql = "INSERT INTO teacher (Users_id, qualification) VALUES (?, ?)";
             PreparedStatement psTeacher = con.prepareStatement(insertTeacherSql);
             psTeacher.setInt(1, userId);
@@ -90,7 +87,6 @@ public class TeacherDAO {
     public void updateTeacher(TeacherModel teacher) throws Exception {
         Connection con = DBConnection.getConnection();
 
-        // Update users table
         String updateUserSql = "UPDATE users SET name=?, username=?, email=?, cnic=? WHERE id=?";
         PreparedStatement psUser = con.prepareStatement(updateUserSql);
         psUser.setString(1, teacher.getName());
@@ -100,7 +96,6 @@ public class TeacherDAO {
         psUser.setInt(5, teacher.getUsersId());
         psUser.executeUpdate();
 
-        // Update teacher table
         String updateTeacherSql = "UPDATE teacher SET qualification=? WHERE id=?";
         PreparedStatement psTeacher = con.prepareStatement(updateTeacherSql);
         psTeacher.setString(1, teacher.getQualification());
@@ -113,19 +108,17 @@ public class TeacherDAO {
 
     public void deleteTeacher(int id) throws Exception {
         try (Connection con = DBConnection.getConnection()) {
-            // First get user_id from teacher
+
             PreparedStatement getUser = con.prepareStatement("SELECT Users_id FROM teacher WHERE id=?");
             getUser.setInt(1, id);
             ResultSet rs = getUser.executeQuery();
             if (rs.next()) {
                 int userId = rs.getInt("Users_id");
 
-                // Delete from teacher table
                 PreparedStatement t = con.prepareStatement("DELETE FROM teacher WHERE id=?");
                 t.setInt(1, id);
                 t.executeUpdate();
 
-                // Delete from users table
                 PreparedStatement u = con.prepareStatement("DELETE FROM users WHERE id=?");
                 u.setInt(1, userId);
                 u.executeUpdate();
@@ -135,7 +128,7 @@ public class TeacherDAO {
 
     public void deleteAllTeachers() throws Exception {
         try (Connection con = DBConnection.getConnection()) {
-            // Delete all users with role = teacher using JOIN
+
             PreparedStatement ps = con.prepareStatement("DELETE u FROM users u JOIN teacher t ON u.id = t.Users_id WHERE u.role = 'teacher'");
             ps.executeUpdate();
         }
@@ -158,7 +151,6 @@ public class TeacherDAO {
         return teacherId;
     }
 
-    // for application purpose
     public static List<Teacher> listAllTeachers() throws SQLException {
         String sql = "SELECT t.id, t.Users_id, u.name FROM teacher t JOIN users u ON t.Users_id = u.id ORDER BY u.name";
         List<Teacher> list = new ArrayList<>();
@@ -204,7 +196,6 @@ public class TeacherDAO {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 LeaveApplication app = new LeaveApplication();
-                // set fields
                 list.add(app);
             }
         } catch (SQLException e) {

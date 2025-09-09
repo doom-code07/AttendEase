@@ -466,7 +466,7 @@ public class AttendanceDAO {
 
 
 
-
+/*
     public int countAbsentsThisMonth(int studentId, int year, int month) {
         String sql = "SELECT COUNT(*) FROM Attendance_Register " +
                 "WHERE student_id=? AND status='Absent' AND YEAR(date)=? AND MONTH(date)=?";
@@ -481,7 +481,7 @@ public class AttendanceDAO {
         } catch (Exception e) { e.printStackTrace(); }
         return 0;
     }
-
+*/
     // in dao/AttendanceDAO.java
     public List<java.sql.Date> getAbsentDatesThisMonthAsc(int studentId, int year, int month) {
         List<java.sql.Date> out = new ArrayList<>();
@@ -505,6 +505,40 @@ public class AttendanceDAO {
         return out;
     }
 
+    // returns the date of the Nth consecutive absent that completes a streak, or null if not found
+    public java.sql.Date findConsecutiveThresholdDate(int studentId, int year, int month, int threshold) {
+        List<java.sql.Date> absentDates = new ArrayList<>();
+        String sql = "SELECT date FROM Attendance_Register " +
+                "WHERE student_id=? AND status='Absent' AND YEAR(date)=? AND MONTH(date)=? " +
+                "ORDER BY date ASC";
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, studentId);
+            ps.setInt(2, year);
+            ps.setInt(3, month);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) absentDates.add(rs.getDate("date"));
+            }
+        } catch (Exception e) { e.printStackTrace(); return null; }
+
+        if (threshold <= 1 && !absentDates.isEmpty()) return absentDates.get(0);
+
+        int streak = 1;
+        for (int i = 1; i < absentDates.size(); i++) {
+            java.time.LocalDate prev = absentDates.get(i - 1).toLocalDate();
+            java.time.LocalDate curr = absentDates.get(i).toLocalDate();
+            if (curr.equals(prev.plusDays(1))) {
+                streak++;
+                if (streak >= threshold) {
+                    // return the date when streak reached threshold (the current date)
+                    return absentDates.get(i);
+                }
+            } else {
+                streak = 1;
+            }
+        }
+        return null;
+    }
 
 
 }

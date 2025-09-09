@@ -88,6 +88,6 @@ public class AttendancePolicyDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null; // If no policy yet, caller should guard against null.
+        return null;
     }
 }

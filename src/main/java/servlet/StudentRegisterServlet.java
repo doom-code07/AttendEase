@@ -25,24 +25,15 @@ public class StudentRegisterServlet extends HttpServlet {
             String batch = req.getParameter("batch");
             int classId = Integer.parseInt(req.getParameter("class_id"));
 
-            // password validation
-            if (password.length() < 8 || !password.matches(".*\\d.*")) {
-                resp.getWriter().println("Password must be at least 8 characters long and contain at least one digit.");
-                return;
-            }
-
             UserDAO userDAO = new UserDAO();
 
-            // duplicate check
             if (userDAO.isDuplicate(username, email, rollNo, cnic)) {
-                resp.getWriter().println("Username, Email, CNIC or Roll No already exists.");
+                resp.sendRedirect("duplicate_entry.jsp");
                 return;
             }
 
-            // hash password
             String hashedPassword = UserDAO.hashPassword(password);
 
-            // build User
             UserModel user = new UserModel();
             user.setName(name);
             user.setEmail(email);
@@ -51,31 +42,32 @@ public class StudentRegisterServlet extends HttpServlet {
             user.setCnic(cnic);
             user.setRole("student");
 
-            // insert user
             int userId = userDAO.insertUser(user);
 
-            // build Student
             StudentModel student = new StudentModel();
             student.setUserId(userId);
             student.setRollNo(rollNo);
             student.setBatch(batch);
 
-            // insert student + assign class
             int studentId = new StudentDAO().insertStudentReturnId(student);
             new ClassStudentDAO().assignClassToStudent(studentId, classId);
 
             // -------- EMAIL VERIFICATION INTEGRATION START --------
-            try {
+           /* try {
                 String token = TokenUtil.generateToken();
                 LocalDateTime expiry = TokenUtil.expiryAfterHours(24); // valid for 24h
 
                 // save token in DB
                 userDAO.saveVerificationToken(userId, token, expiry);
 
-                // build verification link
-                String siteURL = req.getRequestURL().toString().replace(req.getServletPath(), "");
-                String verifyLink = "http://192.168.188.49:8080/practice/VerifyEmailServlet?token=" + token;
-
+                String baseURL;
+                if (req.getServerName().equals("localhost") || req.getServerName().startsWith("192.168.")) {
+                    baseURL = "https://88846f4daec4.ngrok-free.app/practice";
+                } else {
+                    baseURL = req.getRequestURL().toString().replace(req.getServletPath(), "");
+                }
+                String verifyLink = baseURL + "/VerifyEmailServlet?token=" + token;
+                System.out.println("Generated Verification Link: " + verifyLink);
 
                 String subject = "Please verify your email";
                 String content = "<p>Dear " + name + ",</p>"
@@ -90,13 +82,13 @@ public class StudentRegisterServlet extends HttpServlet {
                 // don’t stop registration — user is saved but unverified
             }
             // -------- EMAIL VERIFICATION INTEGRATION END --------
-
+*/
             // redirect user to pending page instead of success.jsp
-            resp.sendRedirect("verification_pending.jsp");
+            resp.sendRedirect("success.jsp");
 
         } catch (Exception e) {
             e.printStackTrace();
-            resp.getWriter().println("Error during registration.");
+            resp.sendRedirect("failure.jsp");
         }
     }
 }
