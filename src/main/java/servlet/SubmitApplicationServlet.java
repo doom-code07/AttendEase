@@ -17,7 +17,7 @@ public class SubmitApplicationServlet extends HttpServlet {
         try {
             HttpSession session = request.getSession(false);
             if (session == null || session.getAttribute("userId") == null) {
-                response.sendRedirect("login.jsp");
+                response.sendRedirect("index.jsp");
                 return;
             }
 
@@ -69,6 +69,14 @@ public class SubmitApplicationServlet extends HttpServlet {
             }
 
             long days = ChronoUnit.DAYS.between(start, end) + 1;
+
+            if (days > 30) {
+                request.setAttribute("error", "Leave application cannot exceed one month.");
+                request.setAttribute("student", student);
+                request.getRequestDispatcher("submit_application.jsp").forward(request, response);
+                return;
+            }
+
             boolean isTeacherApp = days <= 3;
 
             LeaveApplication app = new LeaveApplication();

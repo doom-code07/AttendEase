@@ -303,13 +303,13 @@
   </servlet-mapping>
 
   <servlet>
-    <servlet-name>ViewAttendanceByClassServlet</servlet-name>
-    <servlet-class>servlet.ViewAttendanceByClassServlet</servlet-class>
+    <servlet-name>ViewAttendanceBySubjectServlet</servlet-name>
+    <servlet-class>servlet.ViewAttendanceBySubjectServlet</servlet-class>
   </servlet>
 
   <servlet-mapping>
-    <servlet-name>ViewAttendanceByClassServlet</servlet-name>
-    <url-pattern>/ViewAttendanceByClassServlet</url-pattern>
+    <servlet-name>ViewAttendanceBySubjectServlet</servlet-name>
+    <url-pattern>/ViewAttendanceBySubjectServlet</url-pattern>
   </servlet-mapping>
 
   <servlet>

@@ -11,39 +11,49 @@ import java.util.Map;
 
 public class SubjectDAO {
 
-    public void addSubjectToClass(int classId, String title, String code) throws SQLException {
-        Connection conn = DBConnection.getConnection();
+    public boolean addSubjectToClass(int classId, String title, String code) throws Exception {
+        Connection con = DBConnection.getConnection();
 
-        String checkQuery = "SELECT s.id FROM subject s JOIN class_subjects cs ON s.id = cs.subject_id WHERE cs.class_id=? AND (s.title=? OR s.code=?)";
-        PreparedStatement checkStmt = conn.prepareStatement(checkQuery);
-        checkStmt.setInt(1, classId);
-        checkStmt.setString(2, title);
-        checkStmt.setString(3, code);
-        ResultSet rs = checkStmt.executeQuery();
-        if (rs.next()) {
-            conn.close();
-            return;
+        // Check if subject with same title and code already exists in that class
+        String checkSql = "SELECT COUNT(*) FROM subject s " +
+                "JOIN class_subjects cs ON s.id = cs.subject_id " +
+                "WHERE cs.class_id = ? AND s.title = ? AND s.code = ?";
+        PreparedStatement checkPs = con.prepareStatement(checkSql);
+        checkPs.setInt(1, classId);
+        checkPs.setString(2, title);
+        checkPs.setString(3, code);
+
+        ResultSet rs = checkPs.executeQuery();
+        rs.next();
+        if (rs.getInt(1) > 0) {
+            con.close();
+            return false; // duplicate found
         }
 
-        String insertSubject = "INSERT INTO subject(title, code) VALUES(?, ?)";
-        PreparedStatement insertStmt = conn.prepareStatement(insertSubject, Statement.RETURN_GENERATED_KEYS);
-        insertStmt.setString(1, title);
-        insertStmt.setString(2, code);
-        insertStmt.executeUpdate();
-        ResultSet generatedKeys = insertStmt.getGeneratedKeys();
+        // Insert subject
+        String insertSubject = "INSERT INTO subject (title, code) VALUES (?, ?)";
+        PreparedStatement ps1 = con.prepareStatement(insertSubject, Statement.RETURN_GENERATED_KEYS);
+        ps1.setString(1, title);
+        ps1.setString(2, code);
+        ps1.executeUpdate();
+
+        ResultSet keys = ps1.getGeneratedKeys();
         int subjectId = 0;
-        if (generatedKeys.next()) {
-            subjectId = generatedKeys.getInt(1);
+        if (keys.next()) {
+            subjectId = keys.getInt(1);
         }
 
-        String link = "INSERT INTO class_subjects(class_id, subject_id) VALUES(?, ?)";
-        PreparedStatement linkStmt = conn.prepareStatement(link);
-        linkStmt.setInt(1, classId);
-        linkStmt.setInt(2, subjectId);
-        linkStmt.executeUpdate();
+        // Map subject to class
+        String insertClassSubject = "INSERT INTO class_subjects (class_id, subject_id) VALUES (?, ?)";
+        PreparedStatement ps2 = con.prepareStatement(insertClassSubject);
+        ps2.setInt(1, classId);
+        ps2.setInt(2, subjectId);
+        ps2.executeUpdate();
 
-        conn.close();
+        con.close();
+        return true;
     }
+
 
     public List<SubjectModel> getSubjectsByClassId(int classId) {
         List<SubjectModel> list = new ArrayList<>();
@@ -144,25 +154,54 @@ public class SubjectDAO {
         return list;
     }
 
-    public void assignSubjectsToTeacher(int teacherId, int[] subjectIds) throws Exception {
+    public String assignSubjectsToTeacher(int teacherId, int[] subjectIds) throws Exception {
         Connection con = DBConnection.getConnection();
-        String sql = "UPDATE subject SET teacher_id = ? WHERE id = ?";
-        PreparedStatement ps = con.prepareStatement(sql);
+        String checkSql = "SELECT teacher_id, title, code FROM subject WHERE id = ?";
+        String updateSql = "UPDATE subject SET teacher_id = ? WHERE id = ?";
+
+        PreparedStatement checkPs = con.prepareStatement(checkSql);
+        PreparedStatement updatePs = con.prepareStatement(updateSql);
+
+        StringBuilder message = new StringBuilder();
 
         for (int subjectId : subjectIds) {
-            ps.setInt(1, teacherId);
-            ps.setInt(2, subjectId);
-            ps.executeUpdate();
+            checkPs.setInt(1, subjectId);
+            ResultSet rs = checkPs.executeQuery();
+
+            if (rs.next()) {
+                int currentTeacher = rs.getInt("teacher_id");
+                String title = rs.getString("title");
+                String code = rs.getString("code");
+
+                if (currentTeacher != 0) {
+                    if (currentTeacher == teacherId) {
+                        // Already assigned to the same teacher
+                        message.append("Already assigned: ").append(title).append(" (").append(code).append(")<br>");
+                        continue;
+                    } else {
+                        // Conflict with another teacher
+                        message.append("Conflict: ").append(title).append(" (").append(code).append(") already assigned to another teacher.<br>");
+                        continue;
+                    }
+                }
+            }
+
+            // Assign subject if not assigned
+            updatePs.setInt(1, teacherId);
+            updatePs.setInt(2, subjectId);
+            updatePs.executeUpdate();
         }
 
         con.close();
+
+        return message.toString(); // empty if everything was newly assigned
     }
 
     public List<Map<String, String>> getAssignedSubjects() throws Exception {
         List<Map<String, String>> list = new ArrayList<>();
         Connection con = DBConnection.getConnection();
 
-        String sql = "SELECT s.id AS subject_id, s.title, u.name, u.cnic " +
+        String sql = "SELECT s.id AS subject_id, s.title, s.code, u.name, u.cnic " +
                 "FROM subject s " +
                 "JOIN teacher t ON s.teacher_id = t.id " +
                 "JOIN users u ON t.Users_id = u.id " +
@@ -175,6 +214,7 @@ public class SubjectDAO {
             Map<String, String> row = new HashMap<>();
             row.put("subject_id", String.valueOf(rs.getInt("subject_id")));
             row.put("title", rs.getString("title"));
+            row.put("code", rs.getString("code"));
             row.put("name", rs.getString("name"));
             row.put("cnic", rs.getString("cnic"));
             list.add(row);
@@ -183,6 +223,7 @@ public class SubjectDAO {
         con.close();
         return list;
     }
+
 
     public void unassignSubject(int subjectId) throws Exception {
         Connection con = DBConnection.getConnection();

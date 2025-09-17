@@ -42,20 +42,34 @@
             <h1>Assign Subjects to Teacher</h1>
         </header>
 
-        <!-- Form to Assign Subjects -->
-        <section class="form-section">
-            <form action="AssignSubjectServlet" method="post">
-                <label for="teacher">Select Teacher:</label>
-                <select name="teacherId" id="teacher" required>
-                    <%
-                        List<TeacherModel> teachers = new TeacherDAO().getAllTeachers();
-                        for (TeacherModel teacher : teachers) {
-                    %>
-                        <option value="<%= teacher.getId() %>"><%= teacher.getName() %></option>
-                    <%
-                        }
-                    %>
-                </select>
+<!-- Form to Assign Subjects -->
+<section class="form-section">
+    <form action="AssignSubjectServlet" method="post">
+
+        <% if (request.getParameter("success") != null) { %>
+            <p style="color:green;"><%= request.getParameter("success") %></p>
+        <% } %>
+
+        <% if (request.getParameter("info") != null) { %>
+            <p style="color:orange;"><%= request.getParameter("info") %></p>
+        <% } %>
+
+        <% if (request.getParameter("error") != null) { %>
+            <p style="color:red;"><%= request.getParameter("error") %></p>
+        <% } %>
+
+        <label for="teacher">Select Teacher:</label>
+        <select name="teacherId" id="teacher" required>
+            <%
+                List<TeacherModel> teachers = new TeacherDAO().getAllTeachers();
+                for (TeacherModel teacher : teachers) {
+            %>
+                <option value="<%= teacher.getId() %>"><%= teacher.getName() %></option>
+            <%
+                }
+            %>
+        </select>
+
 
                 <h3 style="margin-top:15px;">Select Subjects:</h3>
                 <div style="margin-left:10px;">
@@ -98,7 +112,7 @@
                 <tr>
                     <td><%= row.get("name") %></td>
                     <td><%= row.get("cnic") %></td>
-                    <td><%= row.get("title") %><%= row.get("Code") %></td>
+                    <td><%= row.get("title") %>(<%= row.get("code") %>)</td>
                     <td>
                         <form action="UnassignSubjectServlet" method="post" style="display:inline;">
                             <input type="hidden" name="subjectId" value="<%= row.get("subject_id") %>"/>

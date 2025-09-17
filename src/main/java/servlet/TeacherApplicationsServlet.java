@@ -16,7 +16,7 @@ public class TeacherApplicationsServlet extends HttpServlet {
         try {
             HttpSession session = request.getSession(false);
             if (session == null || session.getAttribute("userId") == null) {
-                response.sendRedirect("login.jsp");
+                response.sendRedirect("index.jsp");
                 return;
             }
             int userId = (int) session.getAttribute("userId");

@@ -27,7 +27,7 @@
                 </li>
                 <li>
                 <li>
-                     <a href="ViewAttendanceByClassServlet">
+                     <a href="ViewAttendanceBySubjectServlet">
                           <i class="fas fa-book"></i> View Attendance
                      </a>
                 </li>

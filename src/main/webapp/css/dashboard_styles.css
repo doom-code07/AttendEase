@@ -91,17 +91,18 @@ body, h1, h2, p, ul, li, a {
     color: white;
     font-size: 18px;
     display: flex;
-    align-items: center;
+    align-items: center; /* Align text and icon vertically */
     background-color: #1b3a63;
     padding: 12px 16px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
-    gap: 10px;
+    gap: 10px; /* Space between icon and text */
 }
 
 .sidebar ul li a i {
-    font-size: 20px;
+    font-size: 20px; /* Icon size */
+}
 .sidebar ul li a.active {
     background-color: white;
     color: navy;
@@ -224,3 +225,5 @@ input[type="text"],input[type="number"],input[type="date"] {
     box-sizing: border-box;
     font-size: 14px;
 }
+
+

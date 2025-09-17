@@ -18,10 +18,18 @@ public class AssignSubjectServlet extends HttpServlet {
                     subjectIds[i] = Integer.parseInt(subjectIdStrings[i]);
                 }
 
-                new SubjectDAO().assignSubjectsToTeacher(teacherId, subjectIds);
+                String message = new SubjectDAO().assignSubjectsToTeacher(teacherId, subjectIds);
+
+                if (message.isEmpty()) {
+                    resp.sendRedirect("assign_subject.jsp?success=Subjects assigned successfully");
+                } else {
+                    resp.sendRedirect("assign_subject.jsp?info=" + java.net.URLEncoder.encode(message, "UTF-8"));
+                }
+
+                return;
             }
 
-            resp.sendRedirect("assign_subject.jsp?success=1");
+            resp.sendRedirect("assign_subject.jsp?error=No subjects selected");
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -29,7 +29,7 @@
                 </a>
             </li>
             <li>
-                <a href="ViewAttendanceByClassServlet" target="content-frame">
+                <a href="ViewAttendanceBySubjectServlet" >
                       <i class="fas fa-book"></i> View Attendance
                 </a>
             </li>

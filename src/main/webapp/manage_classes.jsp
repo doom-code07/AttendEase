@@ -46,6 +46,26 @@
         <!-- Add Class Form -->
         <section class="form-section">
             <h2>Add a Class</h2>
+
+            <%
+                String success = (String) session.getAttribute("success");
+                String duplicate = (String) session.getAttribute("duplicate");
+
+                if (success != null) {
+            %>
+                <p style="color:green;"><%= success %></p>
+            <%
+                    session.removeAttribute("success"); // clear message after showing
+                }
+
+                if (duplicate != null) {
+            %>
+                <p style="color:red;"><%= duplicate %></p>
+            <%
+                    session.removeAttribute("duplicate"); // clear message after showing
+                }
+            %>
+
                <form action="AddClassServlet" method="post">
                    <input type="text" name="className" placeholder="Enter Class Name" pattern="[A-Za-z ]+"
                                                                                              title="Only alphabets and spaces are allowed" required>
@@ -60,6 +80,37 @@
                 <hr style="margin:20px 0;">
         <section>
              <h2>All Classes</h2>
+
+             <%
+                 String successMsg = (String) session.getAttribute("success");
+                 String duplicateMsg = (String) session.getAttribute("duplicate");
+                 String errorMsg = (String) session.getAttribute("error");
+             %>
+
+             <% if (successMsg != null) { %>
+                 <p style="color:green;"><%= successMsg %></p>
+                 <%
+                     session.removeAttribute("success");
+                 %>
+             <% } %>
+
+             <% if (duplicateMsg != null) { %>
+                 <p style="color:red;"><%= duplicateMsg %></p>
+                 <%
+                     session.removeAttribute("duplicate");
+                 %>
+             <% } %>
+
+             <% if (errorMsg != null) { %>
+                 <p style="color:orange;"><%= errorMsg %></p>
+                 <%
+                     session.removeAttribute("error");
+                 %>
+             <% } %>
+
+
+
+
                 <div class="class-container">
                  <%
                    ClassDAO classDAO = new ClassDAO();
@@ -78,12 +129,12 @@
 
              <!-- Add Subject Form -->
                  <form action="AddSubjectServlet" method="post" style="margin-top:15px;">
-                      <input type="hidden" name="classId" value="<%= cls.getId() %>">
+                      <input type="hidden" name="classId"  value="<%= cls.getId() %>">
                       <label>Subject Title</label>
                       <input type="text" name="subjectTitle" placeholder="Subject Title" pattern="[A-Za-z ]+"
                                                                                                 title="Only alphabets and spaces are allowed" required><br>
                       <label>Subject Code</label>
-                      <input type="text" name="subjectCode" placeholder="Subject Code" pattern="[0-9]+"
+                      <input type="text" name="subjectCode" maxlength="5" placeholder="Subject Code" pattern="[0-9]+"
                                                                                               title="Only digits are allowed" required>
                       <button type="submit">Add Subject</button>
                  </form>

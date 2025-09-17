@@ -463,26 +463,6 @@ public class AttendanceDAO {
 
 
 
-
-
-
-/*
-    public int countAbsentsThisMonth(int studentId, int year, int month) {
-        String sql = "SELECT COUNT(*) FROM Attendance_Register " +
-                "WHERE student_id=? AND status='Absent' AND YEAR(date)=? AND MONTH(date)=?";
-        try (Connection con = DBConnection.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, studentId);
-            ps.setInt(2, year);
-            ps.setInt(3, month);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) return rs.getInt(1);
-            }
-        } catch (Exception e) { e.printStackTrace(); }
-        return 0;
-    }
-*/
-    // in dao/AttendanceDAO.java
     public List<java.sql.Date> getAbsentDatesThisMonthAsc(int studentId, int year, int month) {
         List<java.sql.Date> out = new ArrayList<>();
         String sql = "SELECT date FROM Attendance_Register " +
@@ -540,5 +520,54 @@ public class AttendanceDAO {
         return null;
     }
 
+
+
+
+
+
+
+
+
+
+
+    public List<AttendanceViewModel> getAttendanceByTeacherAndSubject(int teacherId, int subjectId) throws Exception {
+        List<AttendanceViewModel> list = new ArrayList<>();
+        Connection con = DBConnection.getConnection();
+
+        String sql =
+                "SELECT a.date, a.status, " +
+                        " st.roll_no, u.name AS student_name, " +
+                        " c.name AS class_name, " +
+                        " sub.title AS subject_title, sub.code AS subject_code " +
+                        "FROM Attendance_Register a " +
+                        "JOIN student st ON a.student_id = st.id " +
+                        "JOIN users u ON st.Users_id = u.id " +
+                        "JOIN class c ON a.class_id = c.id " +
+                        "JOIN subject sub ON a.subject_id = sub.id " +
+                        "WHERE sub.teacher_id = ? AND sub.id = ? " +
+                        "ORDER BY a.date DESC";
+
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, teacherId);
+        ps.setInt(2, subjectId);
+
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            AttendanceViewModel vm = new AttendanceViewModel();
+            vm.setDate(rs.getDate("date"));
+            vm.setStatus(rs.getString("status"));
+            vm.setRollNo(rs.getString("roll_no"));
+            vm.setStudentName(rs.getString("student_name"));
+            vm.setClassName(rs.getString("class_name"));
+            vm.setSubjectTitle(rs.getString("subject_title"));
+            vm.setSubjectCode(rs.getString("subject_code"));
+            list.add(vm);
+        }
+
+        rs.close();
+        ps.close();
+        con.close();
+        return list;
+    }
 
 }

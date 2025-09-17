@@ -39,7 +39,7 @@
                 </a>
             </li>
             <li>
-                 <a href="ViewAttendanceByClassServlet">
+                 <a href="ViewAttendanceBySubjectServlet">
                     <i class="fas fa-book"></i> View Attendance
                  </a>
             </li>
@@ -147,10 +147,17 @@
                         <% } %>
                     </select><br><br>
 
+                    <%
+                        String today = new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date());
+                    %>
+
                     <label for="date">Date:</label>
                     <input type="date" id="date" name="date"
-                           value="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %>"
-                           onchange="validateDate()" required><br><br>
+                                   value="<%= today %>"
+                                   min="<%= today %>"
+                                   max="<%= today %>"
+
+                           required><br><br>
 
                     <table>
                         <thead>
