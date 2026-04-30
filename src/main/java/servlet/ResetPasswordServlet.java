@@ -6,7 +6,10 @@ import java.io.IOException;
 import dao.UserDAO;
 
 public class ResetPasswordServlet extends HttpServlet {
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
         HttpSession session = req.getSession(false);
         String email = (String) session.getAttribute("resetEmail");
 
@@ -17,8 +20,13 @@ public class ResetPasswordServlet extends HttpServlet {
 
         String newPassword = req.getParameter("newPassword");
 
-        if (newPassword.length() < 8 || !newPassword.matches(".*\\d.*")) {
-            req.setAttribute("error", "Password must be at least 8 characters and contain at least one digit.");
+        // SERVER-SIDE PASSWORD VALIDATION
+        String passwordRegex =
+                "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
+
+        if (newPassword == null || !newPassword.matches(passwordRegex)) {
+            req.setAttribute("error",
+                    "Password must contain uppercase, lowercase, number and special character.");
             req.getRequestDispatcher("reset_password.jsp").forward(req, resp);
             return;
         }
@@ -27,8 +35,10 @@ public class ResetPasswordServlet extends HttpServlet {
             UserDAO dao = new UserDAO();
             String hashedPassword = dao.hashPassword(newPassword);
             dao.updatePasswordByEmail(email, hashedPassword);
+
             session.removeAttribute("resetEmail");
             resp.sendRedirect("success.jsp");
+
         } catch (Exception e) {
             e.printStackTrace();
             resp.sendRedirect("failure.jsp");

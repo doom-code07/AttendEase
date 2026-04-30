@@ -1,39 +1,64 @@
+/* ======================
+   General Page Styling
+   ====================== */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: url("../images/bgpic.jpg") no-repeat center center/cover;
+    background: url("../images/bgpic.jpg") no-repeat center center / cover;
     margin: 0;
-    padding: 0;
+    padding: 40px;
+    min-height: 100vh;
+
+    /* changed for responsiveness */
     display: flex;
     justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+    align-items: flex-start;
 }
 
+/* ======================
+   Main Container
+   ====================== */
 .container {
     background: #ffffff;
     padding: 25px 35px;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    width: 450px;
+
+    /* responsive width */
+    width: 50%;
+    max-width: 450px;
+    min-width: 320px;
+
     text-align: left;
+    transition: all 0.3s ease;
 }
 
+/* ======================
+   Headings
+   ====================== */
 h2 {
     margin-bottom: 20px;
     color: #333;
     text-align: center;
 }
 
+/* ======================
+   Paragraphs
+   ====================== */
 p {
     font-size: 16px;
     margin: 12px 0;
     color: #444;
 }
+
 p strong {
     color: #222;
 }
 
-a.btn, button {
+/* ======================
+   Buttons & Links
+   ====================== */
+a.btn,
+button {
     display: inline-block;
     margin-top: 20px;
     text-decoration: none;
@@ -44,13 +69,17 @@ a.btn, button {
     font-size: 14px;
     border: none;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: background 0.3s ease;
 }
 
-a.btn:hover, button:hover {
+a.btn:hover,
+button:hover {
     background: #0056b3;
 }
 
+/* ======================
+   Form Styling
+   ====================== */
 form {
     display: flex;
     flex-direction: column;
@@ -62,7 +91,8 @@ label {
     color: #444;
 }
 
-input, select {
+input,
+select {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 6px;
@@ -71,7 +101,69 @@ input, select {
     outline: none;
 }
 
-input:focus, select:focus {
+input:focus,
+select:focus {
     border-color: #007bff;
     box-shadow: 0 0 4px rgba(0,123,255,0.3);
+}
+
+/* ======================
+   Tablet Screens
+   ====================== */
+@media (max-width: 768px) {
+    body {
+        padding: 25px;
+        align-items: center;
+    }
+
+    .container {
+        width: 80%;
+        padding: 22px 25px;
+    }
+
+    h2 {
+        font-size: 22px;
+    }
+
+    p {
+        font-size: 15px;
+    }
+}
+
+/* ======================
+   Mobile Screens
+   ====================== */
+@media (max-width: 480px) {
+    body {
+        padding: 15px;
+    }
+
+    .container {
+        width: 100%;
+        min-width: unset;
+        padding: 18px 20px;
+        border-radius: 10px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    p {
+        font-size: 14px;
+    }
+
+    input,
+    select {
+        font-size: 14px;
+        padding: 9px;
+    }
+
+    a.btn,
+    button {
+        width: 100%;
+        padding: 12px;
+        font-size: 15px;
+        text-align: center;
+    }
 }

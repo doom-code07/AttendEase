@@ -252,6 +252,24 @@ public class LeaveApplicationDAO {
         }
         return false;
     }
+    public static int countByStudentIdAndMonth(int studentId, int month, int year) throws Exception {
+        Connection con = DBConnection.getConnection();
 
+        String sql = "SELECT COUNT(*) FROM LeaveApplication " +
+                "WHERE applicant_id = ? AND MONTH(start_date) = ? AND YEAR(start_date) = ?";
+
+
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, studentId);
+        ps.setInt(2, month);
+        ps.setInt(3, year);
+
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            return rs.getInt(1);
+        }
+        return 0;
+    }
 
 }

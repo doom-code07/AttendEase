@@ -1,4 +1,4 @@
-package servlet;
+/*package servlet;
 
 import dao.SubjectDAO;
 
@@ -18,6 +18,41 @@ public class AddSubjectServlet extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        response.sendRedirect("manage_classes.jsp");
+    }
+}
+*/
+
+package servlet;
+
+import dao.SubjectDAO;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import java.io.IOException;
+
+public class AddSubjectServlet extends HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int classId = Integer.parseInt(request.getParameter("classId"));
+        String title = request.getParameter("subjectTitle");
+        String code = request.getParameter("subjectCode");
+
+        HttpSession session = request.getSession();
+
+        try {
+            SubjectDAO dao = new SubjectDAO();
+            boolean added = dao.addSubjectToClass(classId, title.trim(), code.trim());
+
+            if (added) {
+                session.setAttribute("success", "Subject added successfully.");
+            } else {
+                session.setAttribute("duplicate", "Subject with same title and code already exists.");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            session.setAttribute("error", "An error occurred while adding subject.");
+        }
+
         response.sendRedirect("manage_classes.jsp");
     }
 }

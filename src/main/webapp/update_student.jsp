@@ -11,9 +11,11 @@
 <head>
     <title>Update Student</title>
     <link rel="stylesheet" href="css/details.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
     <div class="container">
+    <a href="ManageStudentServlet" class="btn">Back</a>
         <h2>Update Student</h2>
         <form action="SubmitUpdateStudentServlet" method="post">
             <input type="hidden" name="id" value="<%= s.getId() %>"/>

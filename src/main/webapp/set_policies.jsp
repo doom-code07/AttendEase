@@ -18,20 +18,14 @@
 <body>
 <div class="container">
     <!-- Sidebar -->
-    <aside class="sidebar">
-        <h2>Vice Principal</h2>
-        <ul>
-            <li><a href="ManageStruckOffServlet">
-                <i class="fas fa-user-times"></i> Manage Struck Off
-            </a></li>
-            <li><a href="set_policies.jsp" class="active">
-                <i class="fas fa-cogs"></i> Set Policies
-            </a></li>
-            <li><a href="ViceApplicationsServlet"">
-                <i class="fas fa-envelope-open-text"></i> Manage Applications
-            </a></li>
-        </ul>
-    </aside>
+        <aside class="sidebar">
+            <h2>Vice Principal</h2>
+            <ul>
+                <li><a href="ManageStruckOffServlet"><i class="fas fa-user-times"></i> Manage Struck Off</a></li>
+                <li><a href="set_policies.jsp" class="active"><i class="fas fa-cogs"></i> Set Policies</a></li>
+                <li><a href="ViceApplicationsServlet"><i class="fas fa-envelope-open-text"></i> Manage Applications</a></li>
+            </ul>
+        </aside>
 
     <!-- Main Content -->
     <main class="main-content">
@@ -47,18 +41,30 @@
         <div class="content">
             <form method="post" action="ApplyPolicyServlet" class="form-container">
                 <label>Minimum Attendance Percentage</label><br>
-                <input type="number" name="min_attendance_percentage" pattern="[0-9]+"
-                                                                             title="Only digits are allowed" required
+                <input type="number" name="min_attendance_percentage"        required
+                                                                             min="50"
+                                                                             max="99"
+                                                                             maxlength="2"
+                                                                             value="<%= (policy != null ? policy.getMinAttendancePercentage() : "") %>"
+                                                                             title="Enter a number between 50 and 99 (2 digits only)"
                        value="<%= (policy != null ? policy.getMinAttendancePercentage() : "") %>">
                 <br>
                 <label>Fine Per Absent Subject</label><br>
-                <input type="number" name="fine_per_absent_subject" pattern="[0-9]+"
-                                                                           title="Only digits are allowed" required
+                <input type="number" name="fine_per_absent_subject" required
+                                                                           min="1"
+                                                                           max="99"
+                                                                           maxlength="2"
+                                                                           value="<%= (policy != null ? policy.getFinePerAbsentSubject() : "") %>"
+                                                                           title="Enter a number between 1 and 99 (2 digits only)"
                        value="<%= (policy != null ? policy.getFinePerAbsentSubject() : "") %>">
                 <br>
                 <label>Struck Off After Absents</label><br>
-                <input type="number" name="struck_off_after_absents" pattern="[0-9]+"
-                                                                            title="Only digits are allowed" required
+                <input type="number" name="struck_off_after_absents" required
+                                                                            min="1"
+                                                                            max="10"
+                                                                            maxlength="2"
+                                                                            value="<%= (policy != null ? policy.getStruckOffAfterAbsents() : "") %>"
+                                                                            title="Enter a number between 1 and 10 (2 digits only)"
                        value="<%= (policy != null ? policy.getStruckOffAfterAbsents() : "") %>">
 
                 <button type="submit" class="action-btn">Save Policy</button>

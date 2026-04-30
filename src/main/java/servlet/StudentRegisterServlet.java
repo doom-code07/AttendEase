@@ -42,6 +42,19 @@ public class StudentRegisterServlet extends HttpServlet {
             user.setCnic(cnic);
             user.setRole("student");
 
+            // SERVER-SIDE PASSWORD VALIDATION
+
+            String passwordRegex =
+                    "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
+
+            if (!password.matches(passwordRegex)) {
+                req.setAttribute("error",
+                        "Password must contain uppercase, lowercase, number and special character.");
+                req.getRequestDispatcher("student_register.jsp")
+                        .forward(req, resp);
+                return;
+            }
+
             int userId = userDAO.insertUser(user);
 
             StudentModel student = new StudentModel();

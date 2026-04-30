@@ -7,9 +7,12 @@
 <head>
     <title>Update Teacher</title>
     <link rel="stylesheet" href="css/details.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 </head>
 <body>
     <div class="container">
+    <a href="ManageTeacherServlet" class="btn">Back</a>
         <h2>Update Teacher</h2>
         <form method="post" action="UpdateTeacherServlet">
             <input type="hidden" name="id" value="<%= teacher.getId() %>"/>

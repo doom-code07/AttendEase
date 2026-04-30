@@ -70,6 +70,7 @@ public class AttendancePolicyDAO {
         return 0;
     }
 
+
     public PolicyModel getCurrentPolicy() {
         String sql = "SELECT id, min_attendance_percentage, fine_per_absent_subject, struck_off_after_absents " +
                 "FROM Policies ORDER BY id DESC LIMIT 1";

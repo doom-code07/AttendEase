@@ -14,15 +14,9 @@
     <aside class="sidebar">
         <h2>Vice Principal</h2>
         <ul>
-            <li><a href="ManageStruckOffServlet">
-                <i class="fas fa-user-times"></i> Manage Struck Off
-            </a></li>
-            <li><a href="set_policies.jsp">
-                <i class="fas fa-cogs"></i> Set Policies
-            </a></li>
-            <li><a href="ViceApplicationsServlet">
-                <i class="fas fa-envelope-open-text"></i> Manage Applications
-            </a></li>
+            <li><a href="ManageStruckOffServlet"><i class="fas fa-user-times"></i> Manage Struck Off</a></li>
+            <li><a href="set_policies.jsp"><i class="fas fa-cogs"></i> Set Policies</a></li>
+            <li><a href="ViceApplicationsServlet"><i class="fas fa-envelope-open-text"></i> Manage Applications</a></li>
         </ul>
     </aside>
 

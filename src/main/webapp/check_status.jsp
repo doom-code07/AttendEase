@@ -19,26 +19,19 @@
 </head>
 <body>
 <div class="container">
-
-    <!-- Sidebar -->
+<!-- Sidebar -->
     <aside class="sidebar">
         <h2>Student Portal</h2>
         <ul>
-            <li><a href="ViewAttendanceServlet">
-                <i class="fas fa-check-circle"></i> View Attendance
-            </a></li>
-            <li><a href="submit_application.jsp">
-                <i class="fas fa-file-alt"></i> Submit Application
-            </a></li>
-            <li><a href="check_status.jsp" class="active">
-                <i class="fas fa-calendar-check"></i> Application Status
-            </a></li>
+            <li><a href="ViewAttendanceServlet"><i class="fas fa-check-circle"></i> View Attendance</a></li>
+            <li><a href="submit_application.jsp"> <i class="fas fa-file-alt"></i> Submit Application</a></li>
+            <li><a href="check_status.jsp" class="active"><i class="fas fa-calendar-check"></i> Application Status</a></li>
         </ul>
     </aside>
 
     <!-- Main Content -->
     <main class="main-content">
-        <a href="student_dashboard.jsp" class="logout_icon">
+        <a href="StudentDashboardServlet" class="logout_icon">
             <i class="fas fa-sign-out-alt"></i> Back
         </a>
 

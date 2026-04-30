@@ -622,6 +622,55 @@ public class StudentDAO {
         } catch (Exception e) { e.printStackTrace(); }
         return list;
     }
+//////////////////////////////////////////////////////////////////////////////////////
+public double getAttendancePercentage(int studentId) {
+    String sql =
+            "SELECT " +
+                    "COUNT(*) AS total, " +
+                    "SUM(CASE WHEN status = 'Present' THEN 1 ELSE 0 END) AS present " +
+                    "FROM Attendance_Register WHERE student_id = ?";
+
+    try (Connection con = DBConnection.getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+
+        ps.setInt(1, studentId);
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                int total = rs.getInt("total");
+                int present = rs.getInt("present");
+                if (total == 0) return 0;
+                return (present * 100.0) / total;
+            }
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return 0;
+}
+    public PolicyModel getCurrentAttendancePolicy() {
+        String sql =
+                "SELECT min_attendance_percentage, fine_per_absent_subject, struck_off_after_absents " +
+                        "FROM Policies ORDER BY id DESC LIMIT 1";
+
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            if (rs.next()) {
+                PolicyModel p = new PolicyModel();
+                p.setMinAttendancePercentage(rs.getInt("min_attendance_percentage"));
+                p.setFinePerAbsentSubject(rs.getInt("fine_per_absent_subject"));
+                p.setStruckOffAfterAbsents(rs.getInt("struck_off_after_absents"));
+                return p;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+/// ////////////////////////////////////////////
 
 }
 

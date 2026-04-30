@@ -1,6 +1,7 @@
 <%@ page import="dao.ClassDAO" %>
 <%@ page import="model.ClassModel" %>
 <%@ page import="java.util.List" %>
+
 <html>
 <head>
     <title>Student Registration</title>
@@ -9,11 +10,12 @@
 <body>
     <div class="form-box">
         <h2>Register as Student</h2>
+        <a href="index.jsp" class="btn">Back</a><hr>
         <form method="post" action="StudentRegisterServlet">
 
             <label for="name">Name</label>
             <input type="text" id="name" name="name"  pattern="[A-Za-z ]+"
-                                                            title="Only alphabets and spaces are allowed" required>
+                       title="Only alphabets and spaces are allowed" required>
 
             <label for="email">Email</label>
             <input type="email" id="email" name="email" required>
@@ -27,10 +29,10 @@
 
             <label for="password">Password</label>
             <input type="password" id="password" name="password"
-            placeholder ="Enter atleast one capital letter,digit and special character"
-            required
-                   pattern="^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\-={}\[\]:;'<>.,?/~`]).{8,}$"
-                          title="Password must be at least 8 characters long, contain one uppercase letter, one digit, and one special character.">
+                   required
+                   pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+                   title="Password must be at least 8 characters long and include uppercase, lowercase, number, and special character (@$!%*?&)"
+            >
 
             <label for="rollno">Roll No</label>
             <input type="text" name="rollno" required
@@ -57,3 +59,5 @@
     </div>
 </body>
 </html>
+
+

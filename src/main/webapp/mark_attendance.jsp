@@ -26,29 +26,14 @@
 <div class="container">
     <!-- Sidebar -->
     <aside class="sidebar">
-        <h2>Teacher Portal</h2>
-        <ul>
-            <li>
-                <a href="ActiveApprovedLeavesServlet" class="active">
-                    <i class="fas fa-marker"></i> Mark Attendance
-                </a>
-            </li>
-            <li>
-                <a href="update_attendance.jsp">
-                    <i class="fas fa-edit"></i> Update Attendance
-                </a>
-            </li>
-            <li>
-                 <a href="ViewAttendanceByClassServlet">
-                    <i class="fas fa-book"></i> View Attendance
-                 </a>
-            </li>
-            <li>
-                <a href="TeacherApplicationsServlet">
-                    <i class="fas fa-envelope-open-text"></i> Applications
-                </a>
-            </li>
-        </ul>
+         <h2>Teacher Portal</h2>
+            <ul>
+                <li><a href="TeacherTimetableServlet"><i class="fas fa-calendar-alt"></i> Timetable </a></li>
+                <li><a href="ActiveApprovedLeavesServlet" class="active"><i class="fas fa-marker"></i> Mark Attendance</a></li>
+                <li><a href="update_attendance.jsp"><i class="fas fa-edit"></i> Update Attendance</a></li>
+                <li><a href="ViewAttendanceBySubjectServlet"><i class="fas fa-book"></i> View Attendance</a></li>
+                <li><a href="TeacherApplicationsServlet"><i class="fas fa-envelope-open-text"></i> Applications</a></li>
+            </ul>
     </aside>
 
     <!-- Main Content -->
@@ -147,10 +132,17 @@
                         <% } %>
                     </select><br><br>
 
+                    <%
+                        String today = new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date());
+                    %>
+
                     <label for="date">Date:</label>
                     <input type="date" id="date" name="date"
-                           value="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %>"
-                           onchange="validateDate()" required><br><br>
+                                   value="<%= today %>"
+                                   min="<%= today %>"
+                                   max="<%= today %>"
+
+                           required><br><br>
 
                     <table>
                         <thead>

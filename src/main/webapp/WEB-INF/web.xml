@@ -303,13 +303,13 @@
   </servlet-mapping>
 
   <servlet>
-    <servlet-name>ViewAttendanceByClassServlet</servlet-name>
-    <servlet-class>servlet.ViewAttendanceByClassServlet</servlet-class>
+    <servlet-name>ViewAttendanceBySubjectServlet</servlet-name>
+    <servlet-class>servlet.ViewAttendanceBySubjectServlet</servlet-class>
   </servlet>
 
   <servlet-mapping>
-    <servlet-name>ViewAttendanceByClassServlet</servlet-name>
-    <url-pattern>/ViewAttendanceByClassServlet</url-pattern>
+    <servlet-name>ViewAttendanceBySubjectServlet</servlet-name>
+    <url-pattern>/ViewAttendanceBySubjectServlet</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -477,6 +477,27 @@
     <servlet-name>VerifyEmailServlet</servlet-name>
     <url-pattern>/VerifyEmailServlet</url-pattern>
   </servlet-mapping>
+  <!-- Add Timetable Servlet -->
+  <servlet>
+    <servlet-name>AddTimetableServlet</servlet-name>
+    <servlet-class>servlet.AddTimetableServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>AddTimetableServlet</servlet-name>
+    <url-pattern>/AddTimetableServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>TeacherTimetableServlet</servlet-name>
+    <servlet-class>servlet.TeacherTimetableServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>TeacherTimetableServlet</servlet-name>
+    <url-pattern>/TeacherTimetableServlet</url-pattern>
+  </servlet-mapping>
+
 
 
 

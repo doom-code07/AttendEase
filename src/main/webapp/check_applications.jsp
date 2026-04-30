@@ -14,21 +14,15 @@
 </head>
 <body>
 <div class="container">
-    <!-- Sidebar -->
-    <aside class="sidebar">
-        <h2>Vice Principal</h2>
-        <ul>
-            <li><a href="manage_struckOff.jsp">
-                <i class="fas fa-user-times"></i> Manage Struck Off
-            </a></li>
-            <li><a href="set_policies.jsp">
-                <i class="fas fa-cogs"></i> Set Policies
-            </a></li>
-            <li><a href="ViceApplicationsServlet".jsp" class="active">
-                <i class="fas fa-envelope-open-text"></i> Manage Applications
-            </a></li>
-        </ul>
-    </aside>
+   <!-- Sidebar -->
+       <aside class="sidebar">
+           <h2>Vice Principal</h2>
+           <ul>
+               <li><a href="ManageStruckOffServlet"><i class="fas fa-user-times"></i> Manage Struck Off</a></li>
+               <li><a href="set_policies.jsp"><i class="fas fa-cogs"></i> Set Policies</a></li>
+               <li><a href="ViceApplicationsServlet" class="active"><i class="fas fa-envelope-open-text"></i> Manage Applications</a></li>
+           </ul>
+       </aside>
 
     <!-- Main Content -->
     <main class="main-content">

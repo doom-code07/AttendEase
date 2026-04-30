@@ -14,25 +14,16 @@
 </head>
 <body>
 <div class="container">
-    <!-- Sidebar (same as admin dashboard) -->
+    <!-- SIDEBAR -->
     <aside class="sidebar">
         <h2>Admin Portal</h2>
         <ul>
-            <li><a href="ManageStudentServlet" class="active">
-                <i class="fas fa-user-graduate"></i> Manage Students
-            </a></li>
-            <li><a href="ManageTeacherServlet">
-                <i class="fas fa-chalkboard-teacher"></i> Manage Teachers
-            </a></li>
-            <li><a href="assign_subject.jsp">
-                <i class="fas fa-book"></i> Assign Subjects
-            </a></li>
-            <li><a href="GenerateChallanPageServlet">
-                <i class="fas fa-file-invoice-dollar"></i> Generate Challan
-            </a></li>
-            <li><a href="manage_classes.jsp">
-                <i class="fas fa-school"></i> Manage Classes
-            </a></li>
+            <li><a href="ManageStudentServlet" class="active"><i class="fas fa-user-graduate"></i> Manage Students</a></li>
+            <li><a href="ManageTeacherServlet"><i class="fas fa-chalkboard-teacher"></i> Manage Teachers</a></li>
+            <li><a href="manage_classes.jsp"><i class="fas fa-school"></i> Manage Classes</a></li>
+            <li><a href="assign_subject.jsp"><i class="fas fa-book"></i> Assign Subjects</a></li>
+            <li><a href="AddTimetableServlet"><i class="fas fa-clock"></i> Timetable</a></li>
+            <li><a href="GenerateChallanPageServlet"><i class="fas fa-file-invoice-dollar"></i> Generate Challan</a></li>
         </ul>
     </aside>
 

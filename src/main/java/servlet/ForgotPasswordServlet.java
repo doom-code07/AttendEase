@@ -15,7 +15,7 @@ public class ForgotPasswordServlet extends HttpServlet {
                 req.getSession().setAttribute("resetEmail", email);
                 resp.sendRedirect("reset_password.jsp");
             } else {
-                resp.getWriter().println("Email not found. <a href='forgot_password.jsp'>Try again</a>");
+                resp.sendRedirect("forgot_failure.jsp");
             }
         } catch (Exception e) {
             e.printStackTrace();

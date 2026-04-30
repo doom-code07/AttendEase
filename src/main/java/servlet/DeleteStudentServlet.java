@@ -14,7 +14,7 @@ public class DeleteStudentServlet extends HttpServlet {
             resp.sendRedirect("ManageStudentServlet");
         } catch (Exception e) {
             e.printStackTrace();
-            resp.sendRedirect("delete_failure.jsp");
+            resp.sendRedirect("delete_success.jsp");
         }
     }
 }

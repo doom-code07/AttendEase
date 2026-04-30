@@ -1,0 +1,136 @@
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f9;
+}
+
+/* FORM CONTAINER */
+form {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* CLASS + DAY SELECT */
+select, input[type="time"] {
+    padding: 6px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* DAY SECTION */
+.day-box {
+    background: #fafafa;
+    border: 1px solid #ddd;
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+/* DAY TITLE */
+.day-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+/* PERIOD GRID */
+.period-row {
+    display: grid;
+    grid-template-columns: 100px 1fr 1fr 150px 150px;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 8px;
+    padding: 8px;
+    background: white;
+    border: 1px solid #eee;
+    border-radius: 5px;
+}
+
+/* PERIOD LABEL */
+.period-label {
+    font-weight: bold;
+    color: #555;
+}
+
+/* BUTTON */
+button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #0056b3;
+}
+</style>
+.timetable-form {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+select, input[type="time"] {
+    padding: 6px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* DAY BLOCK */
+.day-box {
+    background: #f9f9f9;
+    margin: 15px 0;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.day-title {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+/* PERIOD ROW */
+.period-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px;
+    margin-bottom: 5px;
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 5px;
+}
+
+.period-label {
+    width: 100px;
+    font-weight: bold;
+}
+
+/* BUTTON */
+.save-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.save-btn:hover {
+    background: #218838;
+}

@@ -4,6 +4,7 @@
 </head>
 <body>
     <form action="ForgotPasswordServlet" method="post">
+    <a href="index.jsp" class="btn">Back</a>
         <h2>Forgot Password</h2>
         <label for="email">Enter your registered email:</label><br>
         <input type="email" id="email" name="email" required><br><br>

@@ -10,25 +10,16 @@
 </head>
 <body>
 <div class="container">
-    <!-- Sidebar -->
+    <!-- SIDEBAR -->
     <aside class="sidebar">
         <h2>Admin Portal</h2>
         <ul>
-            <li><a href="ManageStudentServlet">
-                <i class="fas fa-user-graduate"></i> Manage Students
-            </a></li>
-            <li><a href="ManageTeacherServlet">
-                <i class="fas fa-chalkboard-teacher"></i> Manage Teachers
-            </a></li>
-            <li><a href="assign_subject.jsp" class="active">
-                <i class="fas fa-book"></i> Assign Subjects
-            </a></li>
-            <li><a href="GenerateChallanPageServlet">
-                <i class="fas fa-file-invoice-dollar"></i> Generate Challan
-            </a></li>
-            <li><a href="manage_classes.jsp">
-                <i class="fas fa-school"></i> Manage Classes
-            </a></li>
+            <li><a href="ManageStudentServlet"><i class="fas fa-user-graduate"></i> Manage Students</a></li>
+            <li><a href="ManageTeacherServlet"><i class="fas fa-chalkboard-teacher"></i> Manage Teachers</a></li>
+            <li><a href="manage_classes.jsp"><i class="fas fa-school"></i> Manage Classes</a></li>
+            <li><a href="assign_subject.jsp" class="active"><i class="fas fa-book"></i> Assign Subjects</a></li>
+            <li><a href="AddTimetableServlet"><i class="fas fa-clock"></i> Timetable</a></li>
+            <li><a href="GenerateChallanPageServlet"><i class="fas fa-file-invoice-dollar"></i> Generate Challan</a></li>
         </ul>
     </aside>
 
@@ -42,20 +33,34 @@
             <h1>Assign Subjects to Teacher</h1>
         </header>
 
-        <!-- Form to Assign Subjects -->
-        <section class="form-section">
-            <form action="AssignSubjectServlet" method="post">
-                <label for="teacher">Select Teacher:</label>
-                <select name="teacherId" id="teacher" required>
-                    <%
-                        List<TeacherModel> teachers = new TeacherDAO().getAllTeachers();
-                        for (TeacherModel teacher : teachers) {
-                    %>
-                        <option value="<%= teacher.getId() %>"><%= teacher.getName() %></option>
-                    <%
-                        }
-                    %>
-                </select>
+<!-- Form to Assign Subjects -->
+<section class="form-section">
+    <form action="AssignSubjectServlet" method="post">
+
+        <% if (request.getParameter("success") != null) { %>
+            <p style="color:green;"><%= request.getParameter("success") %></p>
+        <% } %>
+
+        <% if (request.getParameter("info") != null) { %>
+            <p style="color:orange;"><%= request.getParameter("info") %></p>
+        <% } %>
+
+        <% if (request.getParameter("error") != null) { %>
+            <p style="color:red;"><%= request.getParameter("error") %></p>
+        <% } %>
+
+        <label for="teacher">Select Teacher:</label>
+        <select name="teacherId" id="teacher" required>
+            <%
+                List<TeacherModel> teachers = new TeacherDAO().getAllTeachers();
+                for (TeacherModel teacher : teachers) {
+            %>
+                <option value="<%= teacher.getId() %>"><%= teacher.getName() %></option>
+            <%
+                }
+            %>
+        </select>
+
 
                 <h3 style="margin-top:15px;">Select Subjects:</h3>
                 <div style="margin-left:10px;">
@@ -98,7 +103,7 @@
                 <tr>
                     <td><%= row.get("name") %></td>
                     <td><%= row.get("cnic") %></td>
-                    <td><%= row.get("title") %><%= row.get("Code") %></td>
+                    <td><%= row.get("title") %>(<%= row.get("code") %>)</td>
                     <td>
                         <form action="UnassignSubjectServlet" method="post" style="display:inline;">
                             <input type="hidden" name="subjectId" value="<%= row.get("subject_id") %>"/>
