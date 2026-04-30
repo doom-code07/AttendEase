@@ -15,16 +15,32 @@
 <body>
 <div class="container">
     <!-- Sidebar -->
-           <aside class="sidebar">
-                <h2>Teacher Portal</h2>
-                   <ul>
-                       <li><a href="TeacherTimetableServlet"><i class="fas fa-calendar-alt"></i> Timetable </a></li>
-                       <li><a href="ActiveApprovedLeavesServlet"><i class="fas fa-marker"></i> Mark Attendance</a></li>
-                       <li><a href="update_attendance.jsp"><i class="fas fa-edit"></i> Update Attendance</a></li>
-                       <li><a href="ViewAttendanceBySubjectServlet"><i class="fas fa-book"></i> View Attendance</a></li>
-                       <li><a href="TeacherApplicationsServlet" class="active"><i class="fas fa-envelope-open-text"></i> Applications</a></li>
-                   </ul>
-           </aside>
+    <aside class="sidebar">
+        <h2>Teacher Portal</h2>
+        <ul>
+            <li>
+                <a href="ActiveApprovedLeavesServlet">
+                    <i class="fas fa-marker"></i> Mark Attendance
+                </a>
+            </li>
+            <li>
+                <a href="update_attendance.jsp">
+                    <i class="fas fa-edit"></i> Update Attendance
+                </a>
+            </li>
+            <li>
+                <a href="ViewAttendanceByClassServlet" target="content-frame">
+                      <i class="fas fa-book"></i> View Attendance
+                </a>
+            </li>
+            <li>
+                <a href="TeacherApplicationsServlet" class="active">
+                    <i class="fas fa-envelope-open-text"></i> Applications
+                </a>
+            </li>
+        </ul>
+    </aside>
+
     <!-- Main Content -->
     <main class="main-content">
         <!-- Back -->

@@ -1,4 +1,4 @@
-/* General Style */
+/* General Style*/
 body, h1, h2, p, ul, li, a {
     margin: 0;
     padding: 0;
@@ -9,23 +9,20 @@ body, h1, h2, p, ul, li, a {
 }
 
 .container {
+    width: 1400px;
     display: flex;
-    flex-direction: row;
     height: 100vh;
     background: white;
-    width: 100%; /* Full width instead of fixed 1535px */
 }
 
 /* Sidebar Styles */
 .sidebar {
     width: 250px;
-    max-width: 80vw; /* Ensure it doesn't exceed viewport on small screens */
     background: navy;
     color: white;
     padding: 20px;
-    display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: space-between;
     box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -39,34 +36,32 @@ body, h1, h2, p, ul, li, a {
     padding-bottom: 10px;
 }
 
+.sidebar ul {
+    margin-top: 10px;
+}
+
 .sidebar ul li {
     margin-bottom: 15px;
+    transition: transform 0.2s;
 }
 
 .sidebar ul li a {
     color: white;
     font-size: 18px;
-    display: flex;
-    align-items: center;
+    display: block;
     background-color: #1b3a63;
     padding: 12px 16px;
     border-radius: 8px;
+    text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
-    gap: 10px;
 }
 
-.sidebar ul li a:hover,
-.sidebar ul li a.active {
-    background-color: white;
+.sidebar ul li a:hover {
+    background: white;
     color: navy;
-    font-weight: bold;
     transform: scale(1.05);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-}
-
-.sidebar ul li a i {
-    font-size: 20px;
 }
 
 /* Main Content Styles */
@@ -92,38 +87,69 @@ body, h1, h2, p, ul, li, a {
     font-weight: bold;
 }
 
-/* Back Arrow & Logout */
-.back-arrow, .logout_icon {
+.sidebar ul li a {
+    color: white;
+    font-size: 18px;
     display: flex;
     align-items: center;
+    background-color: #1b3a63;
+    padding: 12px 16px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    gap: 10px;
+}
+
+.sidebar ul li a i {
+    font-size: 20px;
+.sidebar ul li a.active {
+    background-color: white;
     color: navy;
+    font-weight: bold;
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+ /* Back Arrow Styles */
+ .back-arrow {
+    display: flex;
+    align-items: center;
+    color:navy;
     font-size: 18px;
     text-decoration: none;
     margin-bottom: 20px;
 }
+.back-arrow i {
+    margin-right: 10px;
+}
+/* Logout icon styles */
 
-.back-arrow i, .logout_icon i {
+.logout_icon{
+    display: flex;
+    align-items: center;
+    color:navy;
+    font-size: 18px;
+    text-decoration: none;
+    margin-bottom: 20px;
+}
+.logout_icon i {
     margin-right: 10px;
 }
 
-/* Forms & Selects */
-label {
-    font-weight: bold;
-    margin-bottom: 5px;
-    display: inline-block;
-}
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: inline-block;
+        }
 
-select, input[type="text"], input[type="number"], input[type="date"] {
-    width: 100%;
-    max-width: 400px;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 14px;
-}
-
-/* Class Container */
+        select {
+            width: 25%;
+            max-width: 400px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
 .class-container {
     display: flex;
     flex-wrap: wrap;
@@ -138,25 +164,24 @@ select, input[type="text"], input[type="number"], input[type="date"] {
     background: #f9f9f9;
 }
 
-/* Buttons */
-button {
-    padding: 8px 16px;
-    background-color: #28a745;
-    color: #fff;
-    border: none;
-    font-size: 14px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    display: block;
-    margin: 10px auto;
-    text-align: center;
-}
-
-button:hover {
-    background-color: #218838;
-}
-
+        /* Button used in dashboards*/
+        button {
+            padding: 8px 16px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: block;
+            margin: 10px auto;
+            text-align: center;
+        }
+        
+        button:hover {
+            background-color: #218838;
+        }
 .delete-btn {
     background-color: #dc3545;
     color: #fff;
@@ -166,83 +191,36 @@ button:hover {
     cursor: pointer;
     font-size: 14px;
 }
-
 .delete-btn:hover {
     background-color: #c82333;
 }
 
-/* Tables */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
+        /* All tables that are used */
 
-th, td {
-    border: 1px solid #ddd;
-    text-align: center;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            text-align: center;
+            padding: 10px;
+        }
+        th {
+            background-color:  #007bff;
+            color: #fff;
+            font-weight: bold;
+        }
+
+/* Input field */
+input[type="text"],input[type="number"],input[type="date"] {
+    width: 30%;
     padding: 10px;
-}
-
-th {
-    background-color:  #007bff;
-    color: #fff;
-    font-weight: bold;
-}
-
-/* Responsive Media Queries */
-@media screen and (max-width: 1200px) {
-    .container {
-        flex-direction: column;
-        height: auto;
-    }
-    .sidebar {
-        width: 100%;
-        flex-direction: row;
-        overflow-x: auto;
-    }
-    .sidebar ul {
-        display: flex;
-        flex-direction: row;
-        gap: 10px;
-    }
-    .sidebar ul li {
-        margin-bottom: 0;
-    }
-}
-
-@media screen and (max-width: 768px) {
-    .sidebar {
-        padding: 10px;
-    }
-    .main-content header h1 {
-        font-size: 22px;
-    }
-    select, input[type="text"], input[type="number"], input[type="date"] {
-        width: 100%;
-    }
-    .class-block {
-        flex: 1 1 100%;
-    }
-    button {
-        width: 90%;
-    }
-    table, th, td {
-        font-size: 12px;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .main-content header h1 {
-        font-size: 18px;
-    }
-    .sidebar ul li a {
-        padding: 8px;
-        font-size: 14px;
-    }
-    button, .delete-btn {
-        width: 100%;
-        font-size: 12px;
-        padding: 6px 10px;
-    }
+    margin-top: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 14px;
 }
