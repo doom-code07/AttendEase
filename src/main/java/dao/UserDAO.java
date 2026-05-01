@@ -37,18 +37,14 @@ public class UserDAO {
 
     public UserModel validateUser(String username, String plainPassword) throws Exception {
         UserModel user = getUserByUsername(username);
+
         if (user != null) {
-            String hashedInput = hashPassword(plainPassword);
-            if (hashedInput.equals(user.getPassword())) {
+            if (plainPassword.equals(user.getPassword())) {
                 return user;
             }
-            System.out.println("Input Hash: " + hashedInput);
-            System.out.println("DB Hash: " + user.getPassword());
-
         }
         return null;
     }
-
     public int insertUser(UserModel user) throws Exception {
         String sql = "INSERT INTO users (name, username, password, email, cnic, role) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection con = DBConnection.getConnection()) {
