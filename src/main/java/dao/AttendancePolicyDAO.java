@@ -34,7 +34,7 @@ public class AttendancePolicyDAO {
 
                 // Update struck off in Attendance_Register
                 if (isStruck) {
-                    String updateStatus = "UPDATE Attendance_Register SET status='Struck Off' WHERE student_id=?";
+                    String updateStatus = "UPDATE attendance_Register SET status='Struck Off' WHERE student_id=?";
                     PreparedStatement updatePs = con.prepareStatement(updateStatus);
                     updatePs.setInt(1, studentId);
                     updatePs.executeUpdate();
@@ -60,7 +60,7 @@ public class AttendancePolicyDAO {
     }
 
     private int getCount(Connection con, int studentId, String status) throws SQLException {
-        String base = "SELECT COUNT(*) FROM Attendance_Register WHERE student_id=?";
+        String base = "SELECT COUNT(*) FROM attendance_Register WHERE student_id=?";
         String query = status.equals("ALL") ? base : base + " AND status=?";
         PreparedStatement ps = con.prepareStatement(query);
         ps.setInt(1, studentId);
@@ -73,7 +73,7 @@ public class AttendancePolicyDAO {
 
     public PolicyModel getCurrentPolicy() {
         String sql = "SELECT id, min_attendance_percentage, fine_per_absent_subject, struck_off_after_absents " +
-                "FROM Policies ORDER BY id DESC LIMIT 1";
+                "FROM policies ORDER BY id DESC LIMIT 1";
         try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             try (ResultSet rs = ps.executeQuery()) {
