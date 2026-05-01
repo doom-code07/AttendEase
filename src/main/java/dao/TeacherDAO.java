@@ -204,6 +204,37 @@ public class TeacherDAO {
         return list;
     }
 
+    /// /////////////////////////////////////////////////
+    public List<TeacherModel> getTeachersByClassId(int classId) {
+        List<TeacherModel> list = new ArrayList<>();
+
+        String sql =
+                "SELECT DISTINCT t.id, u.name " +
+                        "FROM teacher t " +
+                        "JOIN users u ON t.Users_id = u.id " +
+                        "JOIN subject s ON s.teacher_id = t.id " +
+                        "JOIN class_subjects cs ON cs.subject_id = s.id " +
+                        "WHERE cs.class_id = ?";
+
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, classId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                TeacherModel t = new TeacherModel();
+                t.setId(rs.getInt("id"));
+                t.setName(rs.getString("name"));
+                list.add(t);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
 
 
 }

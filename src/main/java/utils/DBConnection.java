@@ -7,9 +7,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBConnection {
-    private static final String URL = "jdbc:mysql://localhost:3308/attendease?allowPublicKeyRetrieval=true&useSSL=false";
+    private static final String URL = "mysql://root:iCcljfZyLcxCEQhSZoWxXWoQhznvQGRa@gondola.proxy.rlwy.net:46612/railway";
     private static final String USER = "root";
-    private static final String PASSWORD = "119307ikram";
+    private static final String PASSWORD = "iCcljfZyLcxCEQhSZoWxXWoQhznvQGRa";
 
 
     public static Connection getConnection() throws SQLException {

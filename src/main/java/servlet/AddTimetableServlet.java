@@ -35,7 +35,16 @@ public class AddTimetableServlet extends HttpServlet {
                 request.setAttribute("subjects", new java.util.ArrayList<>());
             }
 
-            request.setAttribute("teachers", teacherDAO.getAllTeachers());
+            if (classParam != null && !classParam.isEmpty()) {
+                int classId = Integer.parseInt(classParam);
+
+                request.setAttribute("subjects", subjectDAO.getSubjectsByClassId(classId));
+                request.setAttribute("teachers", teacherDAO.getTeachersByClassId(classId));
+            } else {
+                request.setAttribute("subjects", new java.util.ArrayList<>());
+                request.setAttribute("teachers", new java.util.ArrayList<>());
+            }
+
             request.setAttribute("classes", classDAO.getAllClasses());
 
             request.getRequestDispatcher("admin_timetable.jsp").forward(request, response);
@@ -79,10 +88,10 @@ public class AddTimetableServlet extends HttpServlet {
 
                 for (int i = 1; i <= 6; i++) {
 
-                    String subjectId = request.getParameter(day + "_subject_" + i);
-                    String teacherId = request.getParameter(day + "_teacher_" + i);
-                    String start = request.getParameter(day + "_start_" + i);
-                    String end = request.getParameter(day + "_end_" + i);
+                    String subjectId = request.getParameter(day + "subject" + i);
+                    String teacherId = request.getParameter(day + "teacher" + i);
+                    String start = request.getParameter(day + "start" + i);
+                    String end = request.getParameter(day + "end" + i);
 
                     // if any field is filled → all required
                     if ((subjectId != null && !subjectId.isEmpty()) ||
@@ -110,7 +119,7 @@ public class AddTimetableServlet extends HttpServlet {
                         int tId = Integer.parseInt(teacherId);
 
                         // 🔥 SAME FORM CONFLICT CHECK
-                        String slotKey = tId + "_" + day + "_" + i;
+                        String slotKey = tId + "" + day + "" + i;
 
                         if (teacherSlots.contains(slotKey)) {
                             hasError = true;
@@ -148,8 +157,8 @@ public class AddTimetableServlet extends HttpServlet {
 
                 for (int i = 1; i <= 6; i++) {
 
-                    String subjectId = request.getParameter(day + "_subject_" + i);
-                    String teacherId = request.getParameter(day + "_teacher_" + i);
+                    String subjectId = request.getParameter(day + "subject" + i);
+                    String teacherId = request.getParameter(day + "teacher" + i);
 
                     if (subjectId != null && !subjectId.isEmpty()
                             && teacherId != null && !teacherId.isEmpty()) {
@@ -162,8 +171,8 @@ public class AddTimetableServlet extends HttpServlet {
                         t.setSubjectId(Integer.parseInt(subjectId));
                         t.setTeacherId(Integer.parseInt(teacherId));
 
-                        String start = request.getParameter(day + "_start_" + i);
-                        String end = request.getParameter(day + "_end_" + i);
+                        String start = request.getParameter(day + "start" + i);
+                        String end = request.getParameter(day + "end" + i);
 
                         if (start != null && end != null && !start.isEmpty() && !end.isEmpty()) {
                             t.setStartTime(Time.valueOf(start + ":00"));
@@ -189,4 +198,3 @@ public class AddTimetableServlet extends HttpServlet {
 
 
 }
-
