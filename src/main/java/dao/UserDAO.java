@@ -36,13 +36,21 @@ public class UserDAO {
     }
 
     public UserModel validateUser(String username, String plainPassword) throws Exception {
+
         UserModel user = getUserByUsername(username);
 
         if (user != null) {
-            if (plainPassword.equals(user.getPassword())) {
+
+            String hashedInput = utils.PasswordUtil.hashPassword(plainPassword);
+
+            System.out.println("INPUT HASH = " + hashedInput);
+            System.out.println("DB HASH    = " + user.getPassword());
+
+            if (hashedInput.equals(user.getPassword())) {
                 return user;
             }
         }
+
         return null;
     }
     public int insertUser(UserModel user) throws Exception {
